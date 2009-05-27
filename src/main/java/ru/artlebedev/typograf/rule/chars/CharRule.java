@@ -6,6 +6,6 @@ package ru.artlebedev.typograf.rule.chars;
  * Date: 18.04.2009
  * Time: 14:48:16
  */
-public interface ICharRule {
+public interface CharRule {
     void process();
 }

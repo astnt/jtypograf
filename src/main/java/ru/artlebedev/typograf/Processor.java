@@ -1,6 +1,6 @@
 package ru.artlebedev.typograf;
 
-import ru.artlebedev.typograf.rule.chars.ICharRule;
+import ru.artlebedev.typograf.rule.chars.CharRule;
 import ru.artlebedev.typograf.rule.Rule;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class Processor {
 
     public int charIndex = 0;
 
-    private List<ICharRule> charRules = new ArrayList<ICharRule>();
+    private List<CharRule> charRules = new ArrayList<CharRule>();
 
     public char[] getSource() {
         return source;
@@ -38,7 +38,7 @@ public class Processor {
         this.source = source.toCharArray();
     }
 
-    public void addRule(ICharRule charRule) {
+    public void addRule(CharRule charRule) {
         charRules.add(charRule);
         ((Rule)charRule).p = this;
     }
@@ -53,7 +53,7 @@ public class Processor {
             if (!(hasNextChar = i + 1 < source.length)) {
                 prevChar = source[i - 1];
             }
-            for (ICharRule charRule : charRules) {
+            for (CharRule charRule : charRules) {
                 charRule.process();
             }
         }
