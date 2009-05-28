@@ -32,7 +32,7 @@ public class Word {
 
     Word word = (Word) o;
 
-    if (!value.equals(word.value)) return false;
+    if (!value.toString().equals(word.value.toString())) return false;
 
     return true;
   }
