@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import ru.artlebedev.typograf.rule.chars.DashRule;
 import ru.artlebedev.typograf.rule.chars.QuoteRule;
+import ru.artlebedev.typograf.rule.chars.ParseWordRule;
 import ru.artlebedev.typograf.info.CharsInfo;
 
 import org.apache.log4j.Level;
@@ -68,6 +69,17 @@ public class ProcessorCommonTest extends TestCase {
     }
   }
 
+  public void testParseWorldRule() throws IOException {
+    Processor p = new Processor("one two three - four six, nine and \"left\" to the ");
+    p.addRule(new DashRule());
+    p.addRule(new QuoteRule());
+    p.addRule(new ParseWordRule());
+    if (p.process()) {
+      assertWith("one two three — four six, nine and «left» to the ", p.getSource());
+    } else {
+      fail();
+    }
+  }
 
   private void assertWith(String expected, char[] actual) {
       log.info("result'" + String.valueOf(actual) + "'");
