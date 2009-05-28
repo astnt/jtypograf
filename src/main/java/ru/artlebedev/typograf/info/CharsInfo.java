@@ -13,14 +13,14 @@ public class CharsInfo {
   public static final char noBreakSpace = '\u00A0';
   public static final char space = ' ';
 
-  private static final char ru1Left = '«';
-  private static final char ru1Right = '»';
-  private static final char ru2Left = '„';
-  private static final char ru2Right = '”';
+  public static final char ru1Left = '\u00AB';
+  public static final char ru1Right = '\u00BB';
+  public static final char ru2Left = '\u201E';
+  public static final char ru2Right = '\u201D';
 
-  private static final char en1Left = '“';
-  private static final char en1Right = '”';
-  private static final char en2Left = '‘';
-  private static final char en2Right = '’';
+  public static final char en1Left = '“';
+  public static final char en1Right = '”';
+  public static final char en2Left = '‘';
+  public static final char en2Right = '’';
 
 }

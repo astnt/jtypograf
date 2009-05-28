@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class Processor {
     public char[] source;
 
+    public boolean isInText = false;
     public boolean isInTag = false;
     public boolean isInScript = false;
     public boolean isInStyle = false;
@@ -50,8 +51,8 @@ public class Processor {
                 prevChar = source[i - 1];
             }
             c = source[i];
-            if (!(hasNextChar = i + 1 < source.length)) {
-                prevChar = source[i - 1];
+            if (hasNextChar = i + 1 < source.length - 1) {
+                nextChar = source[i + 1];
             }
             for (CharRule charRule : charRules) {
                 charRule.process();
@@ -59,4 +60,9 @@ public class Processor {
         }
         return true;
     }
+
+  public void updateChar() {
+    c = source[charIndex];
+    // TODO вероятно нужно prev и next chars обновить
+  }
 }

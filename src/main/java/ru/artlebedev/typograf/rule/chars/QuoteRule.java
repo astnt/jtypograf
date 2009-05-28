@@ -1,6 +1,7 @@
 package ru.artlebedev.typograf.rule.chars;
 
 import ru.artlebedev.typograf.info.MainInfo;
+import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.util.CommonUtil;
 
 /**
@@ -19,19 +20,10 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
   private static final int RIGHT = 1;
 
   private static int mode = LEFT;
+  private static int currentLevel = 1;
 
   public QuoteRule()
   {
-    quotesFirstLevelByLang = new Dictionary<int, String[]>();
-    quotesSecondLevelByLang = new Dictionary<int, String[]>();
-
-    quotesFirstLevelByLang.Add(RussianStyle, ru1);
-    quotesFirstLevelByLang.Add(EnglishStyle, en1);
-
-    quotesSecondLevelByLang.Add(RussianStyle, ru2);
-    quotesSecondLevelByLang.Add(EnglishStyle, en2);
-
-    currentLevel = quotesFirstLevelByLang; // по-молчанию
   }
 
 
@@ -39,12 +31,11 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
     if (
         p.c != '"'
             && p.c != '\''
-            && p.c != '«'
-            && p.c != '“'
-            && p.c != '»'
+            && p.c != CharsInfo.ru1Left
+            && p.c != CharsInfo.en1Left
+            && p.c != CharsInfo.ru1Right
       //&& p.c != '”' // HACK
       //&& p.c != '„' // HACK?
-      //„ ”
         ) {
       return;
     }
@@ -56,7 +47,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         ) {
       return;
     }
-
 //!    ct = new CharContext(p.Chars, p.CurrentIndex);
 
     // TODO возможно так можно будет решить проблему с JSON
@@ -82,27 +72,25 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         ) {
       return;
     }
-
+//    log.debug("prev '" + p.prevChar + "' char '" + p.c + "' next char '" + p.nextChar + "'");
     // открывающая кавычка
     if (
         p.hasNextChar &&
             (
-                p.prevChar == ' '
-                    || p.prevChar == (char) 160 // неразрывный пробел
+                p.prevChar == CharsInfo.space
+                    || p.prevChar == CharsInfo.noBreakSpace
                     || p.prevChar == ';'
                     || p.prevChar == '>'
             )
             &&
-            (
-                p.nextChar != '<'
-                    && p.nextChar != ' '
-                    && p.nextChar != ','
-            )
+            (p.nextChar != '<'
+                && p.nextChar != CharsInfo.space
+                && p.nextChar != ',')
         ) {
       mode = LEFT;
       // типа первый раз, понятно, что внутри
       if (isInFirstLevel) {
-        currentLevel = quotesSecondLevelByLang;
+        currentLevel = 2;
       } else {
         // открылся
         isInFirstLevel = true;
@@ -110,51 +98,58 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
     }
 
     // закрывающая кавычка
-    if (//ct.hasNextChar &&
-        (
-            p.nextChar == 32 // пробел
-                || p.nextChar == 160 // неразрывный пробел
-                || p.nextChar == ','
-                || p.nextChar == ';'
-                || p.nextChar == '.'
-                || p.nextChar == '?'
-                || p.nextChar == '!'
-                || p.nextChar == ':'
-                || p.nextChar == '<'
-                || p.nextChar == '"'
-                || p.nextChar == '»'
-                || p.nextChar == '”'
-                || p.nextChar == ')'
-        )
+    if (//p.hasNextChar &&
+        p.nextChar == CharsInfo.space
+            || p.nextChar == CharsInfo.noBreakSpace
+            || p.nextChar == ','
+            || p.nextChar == ';'
+            || p.nextChar == '.'
+            || p.nextChar == '?'
+            || p.nextChar == '!'
+            || p.nextChar == ':'
+            || p.nextChar == '<'
+            || p.nextChar == '"'
+            || p.nextChar == CharsInfo.ru1Right
+            || p.nextChar == CharsInfo.ru2Right
+            || p.nextChar == ')'
         ) {
       mode = RIGHT;
       if (isInFirstLevel && p.hasNextChar) {
         isInFirstLevel = false;
       } else {
-        currentLevel = quotesFirstLevelByLang;
+        currentLevel = 1;
       }
     }
 
-    if (p.c == '«' || p.c == '“') mode = LEFT;
-    if (p.c == '»' || p.c == '”') {
+    if (p.c == CharsInfo.ru1Left  || p.c == CharsInfo.ru2Left)  { mode = LEFT; }
+    if (p.c == CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) {
       mode = RIGHT;
       // Фиксим ошибки вводящих
-      if (p.nextChar != '»' || p.c == '”') currentLevel = quotesFirstLevelByLang;
+      if (p.nextChar != CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) { currentLevel = 1; }
     }
 
 //!    p.Chars.RemoveAt(p.CurrentIndex);
-    int length;
+    int length = 0;
     if (mode == LEFT) {
-      p.Chars.InsertRange(p.CurrentIndex, currentLevel[style][LEFT].ToCharArray());
-      length = quotesFirstLevelByLang[style][LEFT].Length;
+      if (style == MainInfo.ruRU) {
+        if (currentLevel == 1) {
+          p.source[p.charIndex] = CharsInfo.ru1Left;
+        } else if (currentLevel == 2) {
+          p.source[p.charIndex] = CharsInfo.ru2Left;
+        }
+      }
       //mode = right;
     } else {
-      p.Chars.InsertRange(p.CurrentIndex, currentLevel[style][RIGHT].ToCharArray());
-      length = quotesFirstLevelByLang[style][RIGHT].Length;
+      if (style == MainInfo.ruRU) {
+        if (currentLevel == 1) {
+          p.source[p.charIndex] = CharsInfo.ru1Right;
+        } else if (currentLevel == 2) {
+          p.source[p.charIndex] = CharsInfo.ru2Right;
+        }
+      }
       //mode = left;
     }
-
-    p.CurrentIndex = p.CurrentIndex + length - 1;
-    p.UpdateChar();
+//!    p.charIndex = p.charIndex + length - 1;
+    p.updateChar();
   }
 }
