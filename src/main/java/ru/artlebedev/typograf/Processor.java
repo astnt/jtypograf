@@ -75,8 +75,9 @@ public class Processor {
         }
       }
     }
-    this.currentWord = value;
-    log.debug("currentWord:" + currentWord.value.toString());
+    currentWord = value;
+//    log.debug("currentWord'" + currentWord.value.toString() + "'=isInStyle-" + isInStyle + ";isInScript-" + isInScript);
+    log.debug("currentWord'" + currentWord.value.toString() + "'\t\tisInScript-" + isInScript + "(" + value.equals(scriptEnd) + ")" + "tag:" + isInTag);
   }
 
   public char[] getSource() {

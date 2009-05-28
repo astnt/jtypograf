@@ -12,10 +12,11 @@ public class ModeRule extends Rule implements CharRule {
 
   public void process() {
     //Console.WriteLine(p.ModeType + " char [" + p.c + "]");
-    if (p.source.length <= p.charIndex) { return; } // TODO ?
+//!    if (p.source.length <= p.charIndex) { return; } // TODO ?
     // "Тупая проверка" для производительности
-    if (p.c == '<' && !p.isInScript
-        || p.c == '<' && p.isInScript && p.source[p.charIndex + 1] == '/') // ФИКС: <script> if(a<script){ fuck; }</script> test - test
+    if (p.c == '<'
+         && !p.isInScript || (p.c == '<' && p.isInScript && p.source[p.charIndex + 1] == '/') // ФИКС: <script> if(a<script){ fuck; }</script> test - test
+        ) 
     {
       if (p.isInText) {
         p.isInText = false;
@@ -29,6 +30,4 @@ public class ModeRule extends Rule implements CharRule {
       p.isInText = true;
     }
   }
-
-
 }

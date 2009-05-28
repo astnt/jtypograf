@@ -47,6 +47,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         ) {
       return;
     }
+    log.debug("is in script" + p.isInScript);
 //!    ct = new CharContext(p.Chars, p.CurrentIndex);
 
     // TODO возможно так можно будет решить проблему с JSON

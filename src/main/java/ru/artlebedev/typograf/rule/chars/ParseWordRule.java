@@ -24,7 +24,7 @@ public class ParseWordRule extends Rule implements CharRule {
       // TODO вероятно пропущено добавление неразрывного пробела
       p.setCurrentWord(word);
       word = new Word();
-      p.charIndex += 1;
+//      p.charIndex += 1;
       p.updateChar(); // обновляем текущий char
       return;
     }
