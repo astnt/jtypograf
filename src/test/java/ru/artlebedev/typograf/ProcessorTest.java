@@ -7,6 +7,7 @@ import ru.artlebedev.typograf.rule.chars.QuoteRule;
 import ru.artlebedev.typograf.rule.chars.ParseWordRule;
 import ru.artlebedev.typograf.rule.chars.ModeRule;
 import ru.artlebedev.typograf.rule.word.ShortWordRule;
+import ru.artlebedev.typograf.rule.word.HyphenWordRule;
 import ru.artlebedev.typograf.info.CharsInfo;
 
 import org.apache.log4j.Level;
@@ -81,7 +82,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testParseWorldRule() throws IOException {
-    setUpLog();
+//    setUpLog();
     Processor p = new Processor("one two three - four six, nine and \"left\" to the ");
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
@@ -128,6 +129,41 @@ public class ProcessorTest extends TestCase {
     }
   }
 
+  public void testShortWordsComplex() {
+    final Processor p = createProcessor("как бы то ни было"); // как&nbsp;бы&nbsp;то ни&nbsp;было
+    if (p.process()) {
+      assertTrue(p.source[3] == CharsInfo.noBreakSpace);
+      assertTrue(p.source[6] == CharsInfo.noBreakSpace);
+      assertTrue(p.source[9] == CharsInfo.space);
+      assertTrue(p.source[12] == CharsInfo.noBreakSpace);
+    } else {
+      fail();
+    }
+  }
+
+  public void testHyphenWordRule() {
+    final Processor p = createProcessor("текст это просто 123-456 по тел. (452) 456-45-544 и т.д."); // как&nbsp;бы&nbsp;то ни&nbsp;было
+    if (p.process()) {
+      assertWith("текст это просто 123–456 по тел. (452) 456-45-544 и т.д.", p.getSource());
+      assertTrue(p.source[20] == CharsInfo.ndash);
+    } else {
+      fail();
+    }
+  }
+
+  public void testDigitsWordRule() {
+    final Processor p = createProcessor("слон весит 215 кг., а может и больше"); // как&nbsp;бы&nbsp;то ни&nbsp;было
+    if (p.process()) {
+      log.debug("result:" + String.valueOf(p.getSource()));
+      assertTrue(p.source[14] == CharsInfo.noBreakSpace);
+      assertTrue(p.source[21] == CharsInfo.noBreakSpace);
+      assertTrue(p.source[27] == CharsInfo.space);
+      assertTrue(p.source[29] == CharsInfo.noBreakSpace);
+    } else {
+      fail();
+    }
+  }
+
   private Processor createProcessor(String source) {
     Processor p = new Processor(source);
     p.addRule(new ParseWordRule());
@@ -136,11 +172,12 @@ public class ProcessorTest extends TestCase {
     p.addRule(new QuoteRule());
 
     p.addRule(new ShortWordRule());
+    p.addRule(new HyphenWordRule());
     return p;
   }
 
   private void assertWith(String expected, char[] actual) {
-      log.info("result'" + String.valueOf(actual) + "'");
+//      log.info("result'" + String.valueOf(actual) + "'");
       assertEquals(expected, String.valueOf(actual));
   }
 
