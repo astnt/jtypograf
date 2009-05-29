@@ -39,10 +39,12 @@ public class Processor {
   private List<CharRule> charRules = new ArrayList<CharRule>();
   private List<WordRule> wordRules = new ArrayList<WordRule>();
   private Word currentWord;
-  private Word prevWord;
+  public Word prevWord;
+  public Word word;
 
   public void setCurrentWord(Word value) {
     //if (value.Length > 0) Console.WriteLine(String.Format("[{0}][mode {1}]", value.Value, ModeType));
+    word = value;
     if (isInTag) {
       if (value.equals(scriptStart)) { isInScript = true; }
       if (value.equals(scriptEnd)) { isInScript = false; }
@@ -64,7 +66,7 @@ public class Processor {
           && !isInStyle
           && !isInNoTypograf
           ) {
-        if (!currentWord.equals(nbsp)) {
+        if (currentWord != null && !currentWord.equals(nbsp)) {
           prevWord = currentWord;
         }
 
@@ -77,7 +79,7 @@ public class Processor {
     }
     currentWord = value;
 //    log.debug("currentWord'" + currentWord.value.toString() + "'=isInStyle-" + isInStyle + ";isInScript-" + isInScript);
-    log.debug("currentWord'" + currentWord.value.toString() + "'\t\tisInScript-" + isInScript + "(" + value.equals(scriptEnd) + ")" + "tag:" + isInTag);
+//    log.debug("currentWord'" + currentWord.value.toString() + "'\t\tisInScript-" + isInScript + "(" + value.equals(scriptEnd) + ")" + "tag:" + isInTag);
   }
 
   public char[] getSource() {
@@ -95,6 +97,7 @@ public class Processor {
 
   public void addRule(WordRule wordRule) {
     wordRules.add(wordRule);
+    ((Rule) wordRule).p = this;
   }
 
   public boolean process() {

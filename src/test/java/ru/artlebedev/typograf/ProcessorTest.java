@@ -6,6 +6,7 @@ import ru.artlebedev.typograf.rule.chars.DashRule;
 import ru.artlebedev.typograf.rule.chars.QuoteRule;
 import ru.artlebedev.typograf.rule.chars.ParseWordRule;
 import ru.artlebedev.typograf.rule.chars.ModeRule;
+import ru.artlebedev.typograf.rule.word.ShortWordRule;
 import ru.artlebedev.typograf.info.CharsInfo;
 
 import org.apache.log4j.Level;
@@ -24,7 +25,7 @@ import java.io.File;
  * Date: 12.04.2009
  * Time: 17:00:20
  */
-public class ProcessorCommonTest extends TestCase {
+public class ProcessorTest extends TestCase {
 
   protected final transient Log log = LogFactory.getLog(getClass());
 
@@ -80,6 +81,7 @@ public class ProcessorCommonTest extends TestCase {
   }
 
   public void testParseWorldRule() throws IOException {
+    setUpLog();
     Processor p = new Processor("one two three - four six, nine and \"left\" to the ");
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
@@ -93,10 +95,9 @@ public class ProcessorCommonTest extends TestCase {
 
   public void testSafity() throws IOException {
 //    setUpLog();
-    final String source = "<style type=\"text/css\"> background: url(\"test.jpg\") </style> test - test ";
-    Processor p = createProcessor(source);
+    Processor p = createProcessor("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test - test ");
     if (p.process()) {
-      assertWith("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test - test ", p.getSource());
+      assertWith("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test — test ", p.getSource());
     } else {
       fail();
     }
@@ -104,14 +105,26 @@ public class ProcessorCommonTest extends TestCase {
 
   public void testSafity1() throws IOException {
     setUpLog();
-    final File file = new File(getClass().getResource("/source.txt").getFile());
-    final String source = FileUtils.readFileToString(file);
-    log.debug(source);
-    Processor p = createProcessor(source);
-    if (p.process()) {
+//    final File file = new File(getClass().getResource("/source.txt").getFile());
+//    final String source = FileUtils.readFileToString(file);
+//    log.debug(source);
+//    Processor p = createProcessor(source);
+//    if (p.process()) {
 //      assertWith("one two three — four six, nine and «left» to the ", p.getSource());
-    } else {
+//    } else {
 //      fail();
+//    }
+  }
+
+  public void testShortWords() {
+    final Processor p = createProcessor("тест к предлога");
+    if (p.process()) {
+      final String message = String.valueOf(p.getSource());
+      log.debug(message);
+      assertTrue(p.source[6] == CharsInfo.noBreakSpace);
+      assertTrue(p.source[4] == CharsInfo.space);
+    } else {
+      fail();
     }
   }
 
@@ -121,6 +134,8 @@ public class ProcessorCommonTest extends TestCase {
     p.addRule(new ModeRule());
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
+
+    p.addRule(new ShortWordRule());
     return p;
   }
 
