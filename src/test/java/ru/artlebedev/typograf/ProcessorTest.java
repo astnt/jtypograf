@@ -9,6 +9,7 @@ import ru.artlebedev.typograf.rule.chars.ModeRule;
 import ru.artlebedev.typograf.rule.word.ShortWordRule;
 import ru.artlebedev.typograf.rule.word.HyphenWordRule;
 import ru.artlebedev.typograf.info.CharsInfo;
+import ru.artlebedev.typograf.info.MainInfo;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -106,11 +107,12 @@ public class ProcessorTest extends TestCase {
 
   public void testSafity1() throws IOException {
     setUpLog();
-//    final File file = new File(getClass().getResource("/source.txt").getFile());
-//    final String source = FileUtils.readFileToString(file);
-//    log.debug(source);
-//    Processor p = createProcessor(source);
-//    if (p.process()) {
+    final File file = new File(getClass().getResource("/source.txt").getFile());
+    final String source = FileUtils.readFileToString(file);
+    Processor p = createProcessor(source);
+    if (p.process()) {
+      log.debug(String.valueOf(p.getSource()));
+    }
 //      assertWith("one two three — four six, nine and «left» to the ", p.getSource());
 //    } else {
 //      fail();
@@ -159,6 +161,26 @@ public class ProcessorTest extends TestCase {
       assertTrue(p.source[21] == CharsInfo.noBreakSpace);
       assertTrue(p.source[27] == CharsInfo.space);
       assertTrue(p.source[29] == CharsInfo.noBreakSpace);
+    } else {
+      fail();
+    }
+  }
+
+  public void testQuoteRuleEn() {
+    final Processor p = createProcessor("Snoovel allows you to create and view \"Google Earth \"tours\" in your\" browser.");
+    p.style = MainInfo.enEN;
+    if (p.process()) {
+      assertWith("Snoovel allows you to create and view “Google Earth ‘tours’ in your” browser.", p.getSource());
+    } else {
+      fail();
+    }
+  }
+
+  public void testDashRuleEn() {
+    final Processor p = createProcessor("Test - dash test in en.");
+    p.style = MainInfo.enEN;
+    if (p.process()) {
+      assertWith("Test – dash test in en.", p.getSource()); // ndash
     } else {
       fail();
     }

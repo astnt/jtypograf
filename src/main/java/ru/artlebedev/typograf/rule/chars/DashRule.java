@@ -1,6 +1,7 @@
 package ru.artlebedev.typograf.rule.chars;
 
 import ru.artlebedev.typograf.info.CharsInfo;
+import ru.artlebedev.typograf.info.MainInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,7 +30,11 @@ public class DashRule extends AbstractCharRule implements CharRule {
               || p.prevChar == '>'
               && p.nextChar == CharsInfo.space
           ) {
-        p.source[p.charIndex] = CharsInfo.mdash;
+        if (p.style == MainInfo.ruRU) {
+          p.source[p.charIndex] = CharsInfo.mdash;
+        } else if (p.style == MainInfo.enEN) {
+          p.source[p.charIndex] = CharsInfo.ndash;
+        }
         // привяжем к предыдущему слову
         if (p.hasPrevChar) {
           p.source[p.charIndex - 1] = CharsInfo.noBreakSpace;

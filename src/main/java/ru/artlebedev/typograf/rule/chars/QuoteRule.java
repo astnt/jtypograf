@@ -13,7 +13,6 @@ import ru.artlebedev.typograf.util.CommonUtil;
 public class QuoteRule extends AbstractCharRule implements CharRule {
 
   private boolean isInFirstLevel = false;
-  public int style = MainInfo.ruRU;
 
   // режимы
   private static final int LEFT = 0;
@@ -47,7 +46,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         ) {
       return;
     }
-    log.debug("is in script" + p.isInScript);
 //!    ct = new CharContext(p.Chars, p.CurrentIndex);
 
     // TODO возможно так можно будет решить проблему с JSON
@@ -62,7 +60,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
     //        && ct.nextChar != '!'
     //        )
     //   ) return;
-    if (style == MainInfo.enEN && p.c == '\'') {
+    if (p.style == MainInfo.enEN && p.c == '\'') {
       return;
     } // HACK фикс для английской типографики
 
@@ -132,20 +130,32 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
 //!    p.Chars.RemoveAt(p.CurrentIndex);
     int length = 0;
     if (mode == LEFT) {
-      if (style == MainInfo.ruRU) {
+      if (p.style == MainInfo.ruRU) {
         if (currentLevel == 1) {
           p.source[p.charIndex] = CharsInfo.ru1Left;
         } else if (currentLevel == 2) {
           p.source[p.charIndex] = CharsInfo.ru2Left;
         }
+      } else if (p.style == MainInfo.enEN) {
+        if (currentLevel == 1) {
+          p.source[p.charIndex] = CharsInfo.en1Left;
+        } else if (currentLevel == 2) {
+          p.source[p.charIndex] = CharsInfo.en2Left;
+        }
       }
       //mode = right;
     } else {
-      if (style == MainInfo.ruRU) {
+      if (p.style == MainInfo.ruRU) {
         if (currentLevel == 1) {
           p.source[p.charIndex] = CharsInfo.ru1Right;
         } else if (currentLevel == 2) {
           p.source[p.charIndex] = CharsInfo.ru2Right;
+        }
+      } else if (p.style == MainInfo.enEN) {
+        if (currentLevel == 1) {
+          p.source[p.charIndex] = CharsInfo.en1Right;
+        } else if (currentLevel == 2) {
+          p.source[p.charIndex] = CharsInfo.en2Right;
         }
       }
       //mode = left;

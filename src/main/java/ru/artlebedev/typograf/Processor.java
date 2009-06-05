@@ -4,6 +4,7 @@ import ru.artlebedev.typograf.rule.chars.CharRule;
 import ru.artlebedev.typograf.rule.Rule;
 import ru.artlebedev.typograf.rule.word.WordRule;
 import ru.artlebedev.typograf.model.Word;
+import ru.artlebedev.typograf.info.MainInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,6 +43,8 @@ public class Processor {
   public Word prevWord;
   public Word word;
 
+  public int style = MainInfo.ruRU;
+
   public void setCurrentWord(Word value) {
     //if (value.Length > 0) Console.WriteLine(String.Format("[{0}][mode {1}]", value.Value, ModeType));
     word = value;
@@ -78,6 +81,7 @@ public class Processor {
       }
     }
     currentWord = value;
+//    log.debug("currentWord'" + currentWord.value.toString() + "' hyphen:" + currentWord.hyphenCount);
 //    log.debug("currentWord'" + currentWord.value.toString() + "'=isInStyle-" + isInStyle + ";isInScript-" + isInScript);
 //    log.debug("currentWord'" + currentWord.value.toString() + "'\t\tisInScript-" + isInScript + "(" + value.equals(scriptEnd) + ")" + "tag:" + isInTag);
   }

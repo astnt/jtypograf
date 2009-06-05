@@ -8,5 +8,5 @@ package ru.artlebedev.typograf.info;
  */
 public class MainInfo {
   public static int ruRU = 1;
-  public static int enEN = 1;
+  public static int enEN = 2;
 }
