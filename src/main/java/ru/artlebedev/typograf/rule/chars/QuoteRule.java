@@ -12,17 +12,20 @@ import ru.artlebedev.typograf.util.CommonUtil;
  */
 public class QuoteRule extends AbstractCharRule implements CharRule {
 
-  private boolean isInFirstLevel = false;
+  private boolean isInFirstLevel;
 
   // режимы
   private static final int LEFT = 0;
   private static final int RIGHT = 1;
 
-  private static int mode = LEFT;
-  private static int currentLevel = 1;
+  private int mode;
+  private int currentLevel;
 
   public QuoteRule()
   {
+    mode = LEFT;
+    currentLevel = 1;
+    isInFirstLevel = false;
   }
 
 
@@ -127,8 +130,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
       if (p.nextChar != CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) { currentLevel = 1; }
     }
 
-//!    p.Chars.RemoveAt(p.CurrentIndex);
-//    int length = 0;
     if (mode == LEFT) {
       if (p.style.equals(MainInfo.Lang.RU)) {
         if (currentLevel == 1) {
@@ -160,7 +161,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
       }
       //mode = left;
     }
-//!    p.charIndex = p.charIndex + length - 1;
     p.updateChar();
   }
 }
