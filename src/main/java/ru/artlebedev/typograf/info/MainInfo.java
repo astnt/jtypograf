@@ -7,6 +7,7 @@ package ru.artlebedev.typograf.info;
  * Time: 16:35:23
  */
 public class MainInfo {
-  public static int ruRU = 1;
-  public static int enEN = 2;
+  public enum Lang {
+    RU, EN
+  }
 }

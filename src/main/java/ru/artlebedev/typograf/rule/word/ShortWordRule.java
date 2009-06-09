@@ -27,7 +27,7 @@ public class ShortWordRule extends Rule implements WordRule {
     {
       char code = p.source[prevPrevIndex];
       if (
-          CommonUtil.isDigitChar(code) // это цифра
+          Character.isDigit(code) // это цифра
            || particles.contains(p.word) // или частица
            || rightExceptions.contains(p.prevWord) // или относиться к искоючениям
         )
@@ -89,7 +89,7 @@ public class ShortWordRule extends Rule implements WordRule {
       if (p.source.length <= p.charIndex) { return; }
       // Если следущая заглавная
       //if (CommonUtil.IsUpper(chars[nextChar]) && !CommonUtil.IsUpper(chars[prevChar])) return;
-      if (p.prevWord.value.length() != 0 && CommonUtil.isDigitChar(p.prevWord.getLastChar())) { return; }
+      if (p.prevWord.value.length() != 0 && Character.isDigit(p.prevWord.getLastChar())) { return; }
 
       if (p.source.length > nextChar && p.source[nextChar] == '(') { return; }
 

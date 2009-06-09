@@ -16,7 +16,7 @@ public class ParseWordRule extends Rule implements CharRule {
   private Word word = new Word();
 
   public void process() {
-    if (p.c == '.' && word.value.length() == 1 && CommonUtil.isUpper(word.charAt(0))) {
+    if (p.c == '.' && word.value.length() == 1 && Character.isUpperCase(word.charAt(0))) {
       if (p.hasNextChar && p.nextChar == ' ') {
         return;
       }

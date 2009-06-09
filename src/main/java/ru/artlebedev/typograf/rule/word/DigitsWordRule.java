@@ -15,8 +15,7 @@ public class DigitsWordRule extends Rule implements WordRule {
   {
     if (!p.word.hasDigit) { return; }
     if (p.charIndex >= p.source.length) { return; }
-    if (CommonUtil.isDigitChar(p.word.charAt(p.word.value.length() - 1)) && p.c == CharsInfo.space)
-    {
+    if (Character.isDigit(p.word.charAt(p.word.value.length() - 1)) && p.c == CharsInfo.space) {
       p.source[p.charIndex] = CharsInfo.noBreakSpace;
     }
   }

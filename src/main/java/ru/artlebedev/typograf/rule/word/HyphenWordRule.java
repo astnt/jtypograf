@@ -25,7 +25,7 @@ public class HyphenWordRule extends Rule implements WordRule {
       int hyphenIndex = p.charIndex - p.word.value.length() + p.word.value.toString().indexOf('-');
 //      if (p.hasPrevChar && p.hasNextChar && CommonUtil.isDigitChar(p.prevChar) && CommonUtil.isDigitChar(p.nextChar)) {
       // TODO проверка, а может таких символов нет? (маловероятно на html-странице)
-      if (CommonUtil.isDigitChar(p.source[hyphenIndex - 1]) && CommonUtil.isDigitChar(p.source[hyphenIndex + 1])) {
+      if (Character.isDigit(p.source[hyphenIndex - 1]) && Character.isDigit(p.source[hyphenIndex + 1])) {
         p.source[hyphenIndex] = CharsInfo.ndash;
 //        p.source[hyphenIndex] = CharsInfo.mdash;
       }

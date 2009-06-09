@@ -43,7 +43,7 @@ public class Typograf {
   public Word prevWord;
   public Word word;
 
-  public int style = MainInfo.ruRU;
+  public MainInfo.Lang style = MainInfo.Lang.RU;
 
   public void setCurrentWord(Word value) {
     //if (value.Length > 0) Console.WriteLine(String.Format("[{0}][mode {1}]", value.Value, ModeType));

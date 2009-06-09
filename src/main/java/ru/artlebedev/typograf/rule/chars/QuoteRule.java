@@ -60,7 +60,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
     //        && ct.nextChar != '!'
     //        )
     //   ) return;
-    if (p.style == MainInfo.enEN && p.c == '\'') {
+    if (p.style.equals(MainInfo.Lang.EN) && p.c == '\'') {
       return;
     } // HACK фикс для английской типографики
 
@@ -130,14 +130,13 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
 //!    p.Chars.RemoveAt(p.CurrentIndex);
 //    int length = 0;
     if (mode == LEFT) {
-      if (p.style == MainInfo.ruRU) {
+      if (p.style.equals(MainInfo.Lang.RU)) {
         if (currentLevel == 1) {
           p.source[p.charIndex] = CharsInfo.ru1Left;
         } else if (currentLevel == 2) {
           p.source[p.charIndex] = CharsInfo.ru2Left;
         }
-      }
-      if (p.style == MainInfo.enEN) {
+      } else if (p.style.equals(MainInfo.Lang.EN)) {
         if (currentLevel == 1) {
           p.source[p.charIndex] = CharsInfo.en1Left;
         } else if (currentLevel == 2) {
@@ -146,14 +145,13 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
       }
       //mode = right;
     } else {
-      if (p.style == MainInfo.ruRU) {
+      if (p.style.equals(MainInfo.Lang.RU)) {
         if (currentLevel == 1) {
           p.source[p.charIndex] = CharsInfo.ru1Right;
         } else if (currentLevel == 2) {
           p.source[p.charIndex] = CharsInfo.ru2Right;
         }
-      }
-      if (p.style == MainInfo.enEN) {
+      } else if (p.style.equals(MainInfo.Lang.EN)) {
         if (currentLevel == 1) {
           p.source[p.charIndex] = CharsInfo.en1Right;
         } else if (currentLevel == 2) {

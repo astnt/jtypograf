@@ -44,7 +44,7 @@ public class Word {
 
   public void append(char c) {
     if (c == '-') { hyphenCount += 1; }
-    if (CommonUtil.isDigitChar(c)) { hasDigit = true; }
+    if (Character.isDigit(c)) { hasDigit = true; }
     value.append(c);
   }
 

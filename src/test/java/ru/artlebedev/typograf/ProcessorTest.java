@@ -168,7 +168,7 @@ public class ProcessorTest extends TestCase {
 
   public void testQuoteRuleEn() {
     final Typograf p = createProcessor("Snoovel allows you to create and view \"Google Earth \"tours\" in your\" browser.");
-    p.style = MainInfo.enEN;
+    p.style = MainInfo.Lang.EN;
     if (p.process()) {
       assertWith("Snoovel allows you to create and view “Google Earth ‘tours’ in your” browser.", p.getSource());
     } else {
@@ -178,7 +178,7 @@ public class ProcessorTest extends TestCase {
 
   public void testDashRuleEn() {
     final Typograf p = createProcessor("Test - dash test in en.");
-    p.style = MainInfo.enEN;
+    p.style = MainInfo.Lang.EN;
     if (p.process()) {
       assertWith("Test – dash test in en.", p.getSource()); // ndash
     } else {

@@ -30,9 +30,9 @@ public class DashRule extends AbstractCharRule implements CharRule {
               || p.prevChar == '>'
               && p.nextChar == CharsInfo.space
           ) {
-        if (p.style == MainInfo.ruRU) {
+        if (p.style.equals(MainInfo.Lang.RU)) {
           p.source[p.charIndex] = CharsInfo.mdash;
-        } else if (p.style == MainInfo.enEN) {
+        } else if (p.style.equals(MainInfo.Lang.EN)) {
           p.source[p.charIndex] = CharsInfo.ndash;
         }
         // привяжем к предыдущему слову
