@@ -51,7 +51,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testFirst() throws IOException {
-    Processor p = new Processor("test - test");
+    Typograf p = new Typograf("test - test");
     p.addRule(new DashRule());
     if (p.process()) {
       assertWith("test — test", p.getSource());
@@ -61,7 +61,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testQuotes() throws IOException {
-    Processor p = new Processor("test is \"test\" test");
+    Typograf p = new Typograf("test is \"test\" test");
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
     if (p.process()) {
@@ -72,7 +72,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testQuotesSecondLevel() throws IOException {
-    Processor p = new Processor("test is \"test in \"somewhere\"\" test");
+    Typograf p = new Typograf("test is \"test in \"somewhere\"\" test");
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
     if (p.process()) {
@@ -84,7 +84,7 @@ public class ProcessorTest extends TestCase {
 
   public void testParseWorldRule() throws IOException {
 //    setUpLog();
-    Processor p = new Processor("one two three - four six, nine and \"left\" to the ");
+    Typograf p = new Typograf("one two three - four six, nine and \"left\" to the ");
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
     p.addRule(new ParseWordRule());
@@ -97,7 +97,7 @@ public class ProcessorTest extends TestCase {
 
   public void testSafity() throws IOException {
 //    setUpLog();
-    Processor p = createProcessor("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test - test ");
+    Typograf p = createProcessor("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test - test ");
     if (p.process()) {
       assertWith("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test — test ", p.getSource());
     } else {
@@ -109,7 +109,7 @@ public class ProcessorTest extends TestCase {
     setUpLog();
     final File file = new File(getClass().getResource("/source.txt").getFile());
     final String source = FileUtils.readFileToString(file);
-    Processor p = createProcessor(source);
+    Typograf p = createProcessor(source);
     if (p.process()) {
       log.debug(String.valueOf(p.getSource()));
     }
@@ -120,7 +120,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testShortWords() {
-    final Processor p = createProcessor("тест к предлога");
+    final Typograf p = createProcessor("тест к предлога");
     if (p.process()) {
       final String message = String.valueOf(p.getSource());
       log.debug(message);
@@ -132,7 +132,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testShortWordsComplex() {
-    final Processor p = createProcessor("как бы то ни было"); // как&nbsp;бы&nbsp;то ни&nbsp;было
+    final Typograf p = createProcessor("как бы то ни было"); // как&nbsp;бы&nbsp;то ни&nbsp;было
     if (p.process()) {
       assertTrue(p.source[3] == CharsInfo.noBreakSpace);
       assertTrue(p.source[6] == CharsInfo.noBreakSpace);
@@ -144,7 +144,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testHyphenWordRule() {
-    final Processor p = createProcessor("текст это просто 123-456 по тел. (452) 456-45-544 и т.д."); // как&nbsp;бы&nbsp;то ни&nbsp;было
+    final Typograf p = createProcessor("текст это просто 123-456 по тел. (452) 456-45-544 и т.д."); // как&nbsp;бы&nbsp;то ни&nbsp;было
     if (p.process()) {
       assertWith("текст это просто 123–456 по тел. (452) 456-45-544 и т.д.", p.getSource());
       assertTrue(p.source[20] == CharsInfo.ndash);
@@ -154,7 +154,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testDigitsWordRule() {
-    final Processor p = createProcessor("слон весит 215 кг., а может и больше"); // как&nbsp;бы&nbsp;то ни&nbsp;было
+    final Typograf p = createProcessor("слон весит 215 кг., а может и больше"); // как&nbsp;бы&nbsp;то ни&nbsp;было
     if (p.process()) {
       log.debug("result:" + String.valueOf(p.getSource()));
       assertTrue(p.source[14] == CharsInfo.noBreakSpace);
@@ -167,7 +167,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testQuoteRuleEn() {
-    final Processor p = createProcessor("Snoovel allows you to create and view \"Google Earth \"tours\" in your\" browser.");
+    final Typograf p = createProcessor("Snoovel allows you to create and view \"Google Earth \"tours\" in your\" browser.");
     p.style = MainInfo.enEN;
     if (p.process()) {
       assertWith("Snoovel allows you to create and view “Google Earth ‘tours’ in your” browser.", p.getSource());
@@ -177,7 +177,7 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testDashRuleEn() {
-    final Processor p = createProcessor("Test - dash test in en.");
+    final Typograf p = createProcessor("Test - dash test in en.");
     p.style = MainInfo.enEN;
     if (p.process()) {
       assertWith("Test – dash test in en.", p.getSource()); // ndash
@@ -186,8 +186,8 @@ public class ProcessorTest extends TestCase {
     }
   }
 
-  private Processor createProcessor(String source) {
-    Processor p = new Processor(source);
+  private Typograf createProcessor(String source) {
+    Typograf p = new Typograf(source);
     p.addRule(new ParseWordRule());
     p.addRule(new ModeRule());
     p.addRule(new DashRule());

@@ -1,6 +1,6 @@
 package ru.artlebedev.typograf.rule;
 
-import ru.artlebedev.typograf.Processor;
+import ru.artlebedev.typograf.Typograf;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,5 +9,5 @@ import ru.artlebedev.typograf.Processor;
  * Time: 14:38:34
  */
 public class Rule {
-    public Processor p;
+    public Typograf p;
 }

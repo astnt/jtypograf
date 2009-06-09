@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Date: 18.04.2009
  * Time: 14:09:53
  */
-public class Processor {
+public class Typograf {
   public char[] source;
   protected final transient Log log = LogFactory.getLog(getClass());
 
@@ -90,7 +90,7 @@ public class Processor {
     return source;
   }
 
-  public Processor(String source) {
+  public Typograf(String source) {
     this.source = source.toCharArray();
   }
 
