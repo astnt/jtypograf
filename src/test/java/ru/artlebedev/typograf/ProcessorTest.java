@@ -1,25 +1,26 @@
 package ru.artlebedev.typograf;
 
-import junit.framework.TestCase;
-
-import ru.artlebedev.typograf.rule.chars.DashRule;
-import ru.artlebedev.typograf.rule.chars.QuoteRule;
-import ru.artlebedev.typograf.rule.chars.ParseWordRule;
-import ru.artlebedev.typograf.rule.chars.ModeRule;
-import ru.artlebedev.typograf.rule.word.ShortWordRule;
-import ru.artlebedev.typograf.rule.word.HyphenWordRule;
 import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.info.MainInfo;
+import ru.artlebedev.typograf.rule.chars.DashRule;
+import ru.artlebedev.typograf.rule.chars.ModeRule;
+import ru.artlebedev.typograf.rule.chars.ParseWordRule;
+import ru.artlebedev.typograf.rule.chars.QuoteRule;
+import ru.artlebedev.typograf.rule.word.HyphenWordRule;
+import ru.artlebedev.typograf.rule.word.MeasureRule;
+import ru.artlebedev.typograf.rule.word.ShortWordRule;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.BasicConfigurator;
+import junit.framework.TestCase;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.io.FileUtils;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -186,6 +187,25 @@ public class ProcessorTest extends TestCase {
     }
   }
 
+  public void testMeasureRule1() {
+    final Typograf p = createProcessor("текст 12 212 212 млрд куб. м текст");
+    if (p.process()) {
+      assertTrue(p.source[16] == CharsInfo.noBreakSpace);
+      assertTrue(p.source[26] == CharsInfo.noBreakSpace);
+    } else {
+      fail();
+    }
+  }
+  public void testMeasureRule2() {
+    final Typograf p = createProcessor("текст 121 212 212 млрд кв. м текст");
+    if (p.process()) {
+      assertTrue(p.source[17] == CharsInfo.noBreakSpace);
+      assertTrue(p.source[26] == CharsInfo.noBreakSpace);
+    } else {
+      fail();
+    }
+  }
+
   private Typograf createProcessor(String source) {
     Typograf p = new Typograf(source);
     p.addRule(new ParseWordRule());
@@ -195,6 +215,7 @@ public class ProcessorTest extends TestCase {
 
     p.addRule(new ShortWordRule());
     p.addRule(new HyphenWordRule());
+    p.addRule(new MeasureRule());
     return p;
   }
 
