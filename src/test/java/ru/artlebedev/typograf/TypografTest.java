@@ -13,14 +13,10 @@ import ru.artlebedev.typograf.rule.word.ShortWordRule;
 import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,23 +24,8 @@ import java.io.IOException;
  * Date: 12.04.2009
  * Time: 17:00:20
  */
-public class ProcessorTest extends TestCase {
-
-  protected final transient Log log = LogFactory.getLog(getClass());
-
-//  public ProcessorCommonTest() {
-//    BasicConfigurator.configure();
-//    final Level level = Level.OFF;
-//    final Logger logger = Logger.getRootLogger();
-//    logger.setLevel(level);
-//  }
-
-  private void setUpLog() {
-    BasicConfigurator.configure();
-    final Level level = Level.OFF;
-    final Logger logger = Logger.getRootLogger();
-    logger.setLevel(level);
-  }
+public class TypografTest extends TestCase {
+  private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
 
   @Override
   protected void setUp() throws Exception {
@@ -84,7 +65,6 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testParseWorldRule() throws IOException {
-//    setUpLog();
     Typograf p = new Typograf("one two three - four six, nine and \"left\" to the ");
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
@@ -97,7 +77,6 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testSafity() throws IOException {
-//    setUpLog();
     Typograf p = createProcessor("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test - test ");
     if (p.process()) {
       assertWith("<style type=\"text/css\"> background: url(\"test.jpg\") </style> test — test ", p.getSource());
@@ -107,24 +86,19 @@ public class ProcessorTest extends TestCase {
   }
 
   public void testSafity1() throws IOException {
-    setUpLog();
     final File file = new File(getClass().getResource("/source.txt").getFile());
     final String source = FileUtils.readFileToString(file);
     Typograf p = createProcessor(source);
     if (p.process()) {
-      log.debug(String.valueOf(p.getSource()));
+      // ?
+    } else {
+      fail();
     }
-//      assertWith("one two three — four six, nine and «left» to the ", p.getSource());
-//    } else {
-//      fail();
-//    }
   }
 
   public void testShortWords() {
     final Typograf p = createProcessor("тест к предлога");
     if (p.process()) {
-      final String message = String.valueOf(p.getSource());
-      log.debug(message);
       assertTrue(p.source[6] == CharsInfo.noBreakSpace);
       assertTrue(p.source[4] == CharsInfo.space);
     } else {
@@ -157,7 +131,6 @@ public class ProcessorTest extends TestCase {
   public void testDigitsWordRule() {
     final Typograf p = createProcessor("слон весит 215 кг., а может и больше"); // как&nbsp;бы&nbsp;то ни&nbsp;было
     if (p.process()) {
-      log.debug("result:" + String.valueOf(p.getSource()));
       assertTrue(p.source[14] == CharsInfo.noBreakSpace);
       assertTrue(p.source[21] == CharsInfo.noBreakSpace);
       assertTrue(p.source[27] == CharsInfo.space);
@@ -196,6 +169,7 @@ public class ProcessorTest extends TestCase {
       fail();
     }
   }
+
   public void testMeasureRule2() {
     final Typograf p = createProcessor("текст 121 212 212 млрд кв. м текст");
     if (p.process()) {
@@ -203,6 +177,35 @@ public class ProcessorTest extends TestCase {
       assertTrue(p.source[26] == CharsInfo.noBreakSpace);
     } else {
       fail();
+    }
+  }
+
+  public void testQuotes3() {
+    logger.info("started");
+    final Typograf p = createProcessor("<p>\"\"Газпром\" предлагает\" полностью</p>");
+    if (p.process()) {
+      logger.info("result: " + String.valueOf(p.getSource()));
+      assertEquals("<p>«„Газпром” предлагает» полностью</p>", String.valueOf(p.getSource()));
+    }
+  }
+
+  public void testQuotesBreakeLine() {
+    logger.info("started");
+    final Typograf p = createProcessor("<p>\r\n\"Газпром предлагает\"\r\n полностью</p>");
+    if (p.process()) {
+      logger.info("result: " + String.valueOf(p.getSource()));
+      assertEquals("<p>\r\n" +
+          "«Газпром предлагает»\r\n" +
+          " полностью</p>", String.valueOf(p.getSource()));
+    }
+  }
+
+  public void testFirstStatementDash() {
+    logger.info("started");
+    final Typograf p = createProcessor("<p>- Газпром предлагает полностью</p>");
+    if (p.process()) {
+      logger.info("result: " + String.valueOf(p.getSource()));
+      assertEquals("<p>— Газпром предлагает полностью</p>", String.valueOf(p.getSource()));
     }
   }
 
@@ -220,7 +223,6 @@ public class ProcessorTest extends TestCase {
   }
 
   private void assertWith(String expected, char[] actual) {
-//      log.info("result'" + String.valueOf(actual) + "'");
       assertEquals(expected, String.valueOf(actual));
   }
 

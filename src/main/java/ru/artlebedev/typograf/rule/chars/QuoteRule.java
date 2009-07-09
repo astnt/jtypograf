@@ -1,8 +1,10 @@
 package ru.artlebedev.typograf.rule.chars;
 
-import ru.artlebedev.typograf.info.MainInfo;
 import ru.artlebedev.typograf.info.CharsInfo;
+import ru.artlebedev.typograf.info.MainInfo;
 import ru.artlebedev.typograf.util.CommonUtil;
+
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +13,7 @@ import ru.artlebedev.typograf.util.CommonUtil;
  * Time: 16:28:27
  */
 public class QuoteRule extends AbstractCharRule implements CharRule {
-
+  private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
   private boolean isInFirstLevel;
 
   // режимы
@@ -25,7 +27,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
   {
     mode = LEFT;
     currentLevel = 1;
-    isInFirstLevel = false;
   }
 
 
@@ -36,8 +37,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             && p.c != CharsInfo.ru1Left
             && p.c != CharsInfo.en1Left
             && p.c != CharsInfo.ru1Right
-      //&& p.c != '”' // HACK
-      //&& p.c != '„' // HACK?
         ) {
       return;
     }
@@ -49,24 +48,9 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         ) {
       return;
     }
-//!    ct = new CharContext(p.Chars, p.CurrentIndex);
-
-    // TODO возможно так можно будет решить проблему с JSON
-    //if (
-    //       (ct.prevChar != ' ' && ct.prevChar != (char)160 && ct.prevChar != ';' && ct.prevChar != '>')
-    //    && (ct.nextChar != ' ' && ct.nextChar != (char)160
-    //        && ct.nextChar != '»'
-    //        && ct.nextChar != '&'
-    //        && ct.nextChar != ';'
-    //        && ct.nextChar != '.'
-    //        && ct.nextChar != '?'
-    //        && ct.nextChar != '!'
-    //        )
-    //   ) return;
     if (p.style.equals(MainInfo.Lang.EN) && p.c == '\'') {
       return;
     } // HACK фикс для английской типографики
-
     // Проблема с "Международное Standard & Poor's подтвердило" в русском тексте
     if (p.c == '\''
         && CommonUtil.isInLatLetter(p.nextChar)
@@ -74,34 +58,36 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         ) {
       return;
     }
-//    log.debug("prev '" + p.prevChar + "' char '" + p.c + "' next char '" + p.nextChar + "'");
+//    logger.info("quote:[" + p.prevChar + "]{" + p.c + "}[" + p.nextChar + "]");
+    if (p.prevChar == CharsInfo.ru1Left || p.prevChar == CharsInfo.en1Left) { isInFirstLevel = true; currentLevel = 2; } // HACK TODO найти причину <p>««Газпром» предлагает» полностью</p>
     // открывающая кавычка
-    if (
-        p.hasNextChar &&
+    if (p.hasNextChar &&
             (
                 p.prevChar == CharsInfo.space
                     || p.prevChar == CharsInfo.noBreakSpace
                     || p.prevChar == ';'
                     || p.prevChar == '>'
+                    || p.prevChar == '\r'
+                    || p.prevChar == '\n'                
             )
             &&
-            (p.nextChar != '<'
+            p.nextChar != '<'
                 && p.nextChar != CharsInfo.space
-                && p.nextChar != ',')
+                && p.nextChar != ','
         ) {
       mode = LEFT;
       // типа первый раз, понятно, что внутри
       if (isInFirstLevel) {
         currentLevel = 2;
+//        logger.info("currentLevel = 2");
       } else {
         // открылся
         isInFirstLevel = true;
       }
-    }
-
+//      logger.info("mode = LEFT, isInFirstLevel = " + isInFirstLevel);
+    } else
     // закрывающая кавычка
-    if (//p.hasNextChar &&
-        p.nextChar == CharsInfo.space
+    if (p.nextChar == CharsInfo.space
             || p.nextChar == CharsInfo.noBreakSpace
             || p.nextChar == ','
             || p.nextChar == ';'
@@ -114,6 +100,8 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.nextChar == CharsInfo.ru1Right
             || p.nextChar == CharsInfo.ru2Right
             || p.nextChar == ')'
+            || p.nextChar == '\r'
+            || p.nextChar == '\n'
         ) {
       mode = RIGHT;
       if (isInFirstLevel && p.hasNextChar) {
@@ -122,14 +110,12 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         currentLevel = 1;
       }
     }
-
     if (p.c == CharsInfo.ru1Left  || p.c == CharsInfo.ru2Left)  { mode = LEFT; }
     if (p.c == CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) {
       mode = RIGHT;
       // Фиксим ошибки вводящих
-      if (p.nextChar != CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) { currentLevel = 1; }
+      if (p.nextChar != CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) { logger.warning("quote fix"); currentLevel = 1; }
     }
-
     if (mode == LEFT) {
       if (p.style.equals(MainInfo.Lang.RU)) {
         if (currentLevel == 1) {
@@ -144,7 +130,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
           p.source[p.charIndex] = CharsInfo.en2Left;
         }
       }
-      //mode = right;
     } else {
       if (p.style.equals(MainInfo.Lang.RU)) {
         if (currentLevel == 1) {
@@ -159,7 +144,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
           p.source[p.charIndex] = CharsInfo.en2Right;
         }
       }
-      //mode = left;
     }
     p.updateChar();
   }

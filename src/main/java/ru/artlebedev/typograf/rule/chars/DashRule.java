@@ -36,7 +36,7 @@ public class DashRule extends AbstractCharRule implements CharRule {
           p.source[p.charIndex] = CharsInfo.ndash;
         }
         // привяжем к предыдущему слову
-        if (p.hasPrevChar) {
+        if (p.hasPrevChar && p.prevChar == ' ') {
           p.source[p.charIndex - 1] = CharsInfo.noBreakSpace;
         }
       }

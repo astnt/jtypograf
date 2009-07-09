@@ -1,16 +1,13 @@
 package ru.artlebedev.typograf;
 
-import ru.artlebedev.typograf.rule.chars.CharRule;
-import ru.artlebedev.typograf.rule.Rule;
-import ru.artlebedev.typograf.rule.word.WordRule;
-import ru.artlebedev.typograf.model.Word;
 import ru.artlebedev.typograf.info.MainInfo;
+import ru.artlebedev.typograf.model.Word;
+import ru.artlebedev.typograf.rule.Rule;
+import ru.artlebedev.typograf.rule.chars.CharRule;
+import ru.artlebedev.typograf.rule.word.WordRule;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,7 +17,6 @@ import java.util.ArrayList;
  */
 public class Typograf {
   public char[] source;
-  protected final transient Log log = LogFactory.getLog(getClass());
 
   public boolean isInText = false;
   public boolean isInTitle = false;
@@ -81,9 +77,6 @@ public class Typograf {
       }
     }
     currentWord = value;
-//    log.debug("currentWord'" + currentWord.value.toString() + "' hyphen:" + currentWord.hyphenCount);
-//    log.debug("currentWord'" + currentWord.value.toString() + "'=isInStyle-" + isInStyle + ";isInScript-" + isInScript);
-//    log.debug("currentWord'" + currentWord.value.toString() + "'\t\tisInScript-" + isInScript + "(" + value.equals(scriptEnd) + ")" + "tag:" + isInTag);
   }
 
   public char[] getSource() {
