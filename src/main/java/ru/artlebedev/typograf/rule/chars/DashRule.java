@@ -28,6 +28,8 @@ public class DashRule extends AbstractCharRule implements CharRule {
               || p.prevChar == CharsInfo.noBreakSpace
               || p.prevChar == ';'
               || p.prevChar == '>'
+              || p.prevChar == '\r'
+              || p.prevChar == '\n'
               && p.nextChar == CharsInfo.space
           ) {
         if (p.style.equals(MainInfo.Lang.RU)) {

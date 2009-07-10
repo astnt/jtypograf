@@ -209,6 +209,28 @@ public class TypografTest extends TestCase {
     }
   }
 
+  public void testFirstStatementDash1() {
+    logger.info("started");
+    final Typograf p = createProcessor("<p>рост потребления энергоресурсов\n" +
+        "- это экономический рост</p>");
+    if (p.process()) {
+      logger.info("result: " + String.valueOf(p.getSource()));
+      assertEquals("<p>рост потребления энергоресурсов\n" +
+          "— это экономический рост</p>", String.valueOf(p.getSource()));
+    }
+  }
+
+  public void testFirstStatementDash2() {
+    logger.info("started");
+    final Typograf p = createProcessor("<p>рост потребления энергоресурсов -\n" +
+        "это экономический рост</p>");
+    if (p.process()) {
+      logger.info("result: " + String.valueOf(p.getSource()));
+      assertEquals("<p>рост потребления энергоресурсов —\n" +
+          "это экономический рост</p>", String.valueOf(p.getSource()));
+    }
+  }
+
   private Typograf createProcessor(String source) {
     Typograf p = new Typograf(source);
     p.addRule(new ParseWordRule());
