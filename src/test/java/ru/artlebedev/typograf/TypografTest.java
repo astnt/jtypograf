@@ -3,20 +3,13 @@ package ru.artlebedev.typograf;
 import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.info.MainInfo;
 import ru.artlebedev.typograf.rule.chars.DashRule;
-import ru.artlebedev.typograf.rule.chars.ModeRule;
 import ru.artlebedev.typograf.rule.chars.ParseWordRule;
 import ru.artlebedev.typograf.rule.chars.QuoteRule;
-import ru.artlebedev.typograf.rule.word.HyphenWordRule;
-import ru.artlebedev.typograf.rule.word.MeasureRule;
-import ru.artlebedev.typograf.rule.word.ShortWordRule;
-
-import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,13 +17,7 @@ import java.util.logging.Logger;
  * Date: 12.04.2009
  * Time: 17:00:20
  */
-public class TypografTest extends TestCase {
-  private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
-
-  @Override
-  protected void setUp() throws Exception {
-
-  }
+public class TypografTest extends AbstractTypografTest {
 
   public void testFirst() throws IOException {
     Typograf p = new Typograf("test - test");
@@ -180,20 +167,9 @@ public class TypografTest extends TestCase {
     }
   }
 
-  public void testQuotes3() {
-    logger.info("started");
-    final Typograf p = createProcessor("<p>\"\"Газпром\" предлагает\" полностью</p>");
-    if (p.process()) {
-      logger.info("result: " + String.valueOf(p.getSource()));
-      assertEquals("<p>«„Газпром” предлагает» полностью</p>", String.valueOf(p.getSource()));
-    }
-  }
-
   public void testQuotesBreakeLine() {
-    logger.info("started");
     final Typograf p = createProcessor("<p>\r\n\"Газпром предлагает\"\r\n полностью</p>");
     if (p.process()) {
-      logger.info("result: " + String.valueOf(p.getSource()));
       assertEquals("<p>\r\n" +
           "«Газпром предлагает»\r\n" +
           " полностью</p>", String.valueOf(p.getSource()));
@@ -201,51 +177,27 @@ public class TypografTest extends TestCase {
   }
 
   public void testFirstStatementDash() {
-    logger.info("started");
     final Typograf p = createProcessor("<p>- Газпром предлагает полностью</p>");
     if (p.process()) {
-      logger.info("result: " + String.valueOf(p.getSource()));
       assertEquals("<p>— Газпром предлагает полностью</p>", String.valueOf(p.getSource()));
     }
   }
 
   public void testFirstStatementDash1() {
-    logger.info("started");
     final Typograf p = createProcessor("<p>рост потребления энергоресурсов\n" +
         "- это экономический рост</p>");
     if (p.process()) {
-      logger.info("result: " + String.valueOf(p.getSource()));
       assertEquals("<p>рост потребления энергоресурсов\n" +
           "— это экономический рост</p>", String.valueOf(p.getSource()));
     }
   }
 
   public void testFirstStatementDash2() {
-    logger.info("started");
     final Typograf p = createProcessor("<p>рост потребления энергоресурсов -\n" +
         "это экономический рост</p>");
     if (p.process()) {
-      logger.info("result: " + String.valueOf(p.getSource()));
       assertEquals("<p>рост потребления энергоресурсов —\n" +
           "это экономический рост</p>", String.valueOf(p.getSource()));
     }
   }
-
-  private Typograf createProcessor(String source) {
-    Typograf p = new Typograf(source);
-    p.addRule(new ParseWordRule());
-    p.addRule(new ModeRule());
-    p.addRule(new DashRule());
-    p.addRule(new QuoteRule());
-
-    p.addRule(new ShortWordRule());
-    p.addRule(new HyphenWordRule());
-    p.addRule(new MeasureRule());
-    return p;
-  }
-
-  private void assertWith(String expected, char[] actual) {
-      assertEquals(expected, String.valueOf(actual));
-  }
-
 }

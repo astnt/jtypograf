@@ -12,6 +12,7 @@ public class CharsInfo {
   public static final char dash = '-';
   public static final char noBreakSpace = '\u00A0';
   public static final char space = ' ';
+  public static final char quote = '\"';
 
   public static final char ru1Left = '\u00AB';
   public static final char ru1Right = '\u00BB';
@@ -22,5 +23,4 @@ public class CharsInfo {
   public static final char en1Right = '”';
   public static final char en2Left = '‘';
   public static final char en2Right = '’';
-
 }

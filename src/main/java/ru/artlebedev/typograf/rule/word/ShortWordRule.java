@@ -1,12 +1,11 @@
 package ru.artlebedev.typograf.rule.word;
 
+import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.model.Word;
 import ru.artlebedev.typograf.rule.Rule;
-import ru.artlebedev.typograf.info.CharsInfo;
-import ru.artlebedev.typograf.util.CommonUtil;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.

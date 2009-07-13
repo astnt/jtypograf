@@ -1,8 +1,7 @@
 package ru.artlebedev.typograf.rule.word;
 
-import ru.artlebedev.typograf.rule.Rule;
-import ru.artlebedev.typograf.util.CommonUtil;
 import ru.artlebedev.typograf.info.CharsInfo;
+import ru.artlebedev.typograf.rule.Rule;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

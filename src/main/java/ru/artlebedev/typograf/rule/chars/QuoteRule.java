@@ -2,7 +2,7 @@ package ru.artlebedev.typograf.rule.chars;
 
 import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.info.MainInfo;
-import ru.artlebedev.typograf.util.CommonUtil;
+import ru.artlebedev.typograf.util.Util;
 
 import java.util.logging.Logger;
 
@@ -11,15 +11,13 @@ import java.util.logging.Logger;
  * User: anton
  * Date: 27.05.2009
  * Time: 16:28:27
+ * TODO отрефакторить правило
  */
 public class QuoteRule extends AbstractCharRule implements CharRule {
   private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
   private boolean isInFirstLevel;
-
-  // режимы
   private static final int LEFT = 0;
   private static final int RIGHT = 1;
-
   private int mode;
   private int currentLevel;
 
@@ -29,7 +27,6 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
     currentLevel = 1;
   }
 
-
   public void process() {
     if (
         p.c != '"'
@@ -37,29 +34,20 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             && p.c != CharsInfo.ru1Left
             && p.c != CharsInfo.en1Left
             && p.c != CharsInfo.ru1Right
-        ) {
-      return;
-    }
+        ) { return; }
     if (
         p.isInScript
             || p.isInTag
             || p.isInStyle
             || p.isInNoTypograf
-        ) {
-      return;
-    }
-    if (p.style.equals(MainInfo.Lang.EN) && p.c == '\'') {
-      return;
-    } // HACK фикс для английской типографики
+        ) { return; }
+    if (p.style.equals(MainInfo.Lang.EN) && p.c == '\'') { return; } // HACK фикс для английской типографики
     // Проблема с "Международное Standard & Poor's подтвердило" в русском тексте
     if (p.c == '\''
-        && CommonUtil.isInLatLetter(p.nextChar)
-        && CommonUtil.isInLatLetter(p.prevChar)
-        ) {
-      return;
-    }
+        && Util.isInLatLetter(p.nextChar)
+        && Util.isInLatLetter(p.prevChar)
+        ) { return; }
 //    logger.info("quote:[" + p.prevChar + "]{" + p.c + "}[" + p.nextChar + "]");
-    if (p.prevChar == CharsInfo.ru1Left || p.prevChar == CharsInfo.en1Left) { isInFirstLevel = true; currentLevel = 2; } // HACK TODO найти причину <p>««Газпром» предлагает» полностью</p>
     // открывающая кавычка
     if (p.hasNextChar &&
             (
@@ -79,12 +67,10 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
       // типа первый раз, понятно, что внутри
       if (isInFirstLevel) {
         currentLevel = 2;
-//        logger.info("currentLevel = 2");
       } else {
-        // открылся
         isInFirstLevel = true;
+        currentLevel = 1;
       }
-//      logger.info("mode = LEFT, isInFirstLevel = " + isInFirstLevel);
     } else
     // закрывающая кавычка
     if (p.nextChar == CharsInfo.space
@@ -104,18 +90,22 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.nextChar == '\n'
         ) {
       mode = RIGHT;
-      if (isInFirstLevel && p.hasNextChar) {
+      if (isInFirstLevel) {
         isInFirstLevel = false;
       } else {
+//        logger.warning("не в первом уровне и имеет следующий символ");
         currentLevel = 1;
       }
     }
     if (p.c == CharsInfo.ru1Left  || p.c == CharsInfo.ru2Left)  { mode = LEFT; }
     if (p.c == CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) {
       mode = RIGHT;
-      // Фиксим ошибки вводящих
-      if (p.nextChar != CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) { logger.warning("quote fix"); currentLevel = 1; }
+      // Фиксим ошибки вводящих ?
+      if (p.nextChar != CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) { currentLevel = 1; }
     }
+    if (p.prevChar == CharsInfo.ru1Left || p.prevChar == CharsInfo.en1Left) { isInFirstLevel = true; currentLevel = 2; } // HACK TODO найти причину <p>««Газпром» предлагает» полностью</p>
+    if ((p.nextChar == CharsInfo.quote || p.prevChar == CharsInfo.quote)
+        && Util.hasChar(p.source, p.charIndex + 2) && Util.wordEnd(p.source[p.charIndex + 2])) { currentLevel = 2; } // HACK TODO «Комплекс стандартов „Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО „Газпром””»
     if (mode == LEFT) {
       if (p.style.equals(MainInfo.Lang.RU)) {
         if (currentLevel == 1) {

@@ -1,7 +1,5 @@
 package ru.artlebedev.typograf.model;
 
-import ru.artlebedev.typograf.util.CommonUtil;
-
 /**
  * Created by IntelliJ IDEA.
  * User: anton
@@ -29,11 +27,8 @@ public class Word {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Word)) return false;
-
     Word word = (Word) o;
-
     if (!value.toString().equals(word.value.toString())) return false;
-
     return true;
   }
 
