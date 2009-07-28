@@ -26,4 +26,12 @@ public class QuoteRuleTest extends AbstractTypografTest {
       assertEquals("<p>«„Газпром” предлагает» полностью</p>", String.valueOf(p.getSource()));
     }
   }
+
+  public void testQuotesHrefOuter() {
+    final Typograf p = createProcessor("<p>Проект \"<a href=\"#postId=13275\">Сахалин-2</a>\" начался.</p>");
+    if (p.process()) {
+      logger.info(String.valueOf(p.getSource()));
+      assertEquals("<p>Проект «<a href=\"#postId=13275\">Сахалин-2</a>» начался.</p>", String.valueOf(p.getSource()));
+    }
+  }
 }
