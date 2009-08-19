@@ -42,4 +42,12 @@ public class QuoteRuleTest extends AbstractTypografTest {
       assertEquals("<p>Маштоца (Республика Армения); орденом «Достык» («Дружбы») II степени</p>", String.valueOf(p.getSource()));
     }
   }
+
+  public void testQuotes5() {
+    final Typograf p = createProcessor("<p>\"\"Газпром\" свою стратегию. В слова \"вылетает в трубу\"! Таким образом\".</p>");
+    if (p.process()) {
+      logger.info(String.valueOf(p.getSource()));
+      assertEquals("<p>«„Газпром” свою стратегию. В слова „вылетает в трубу”! Таким образом».</p>", String.valueOf(p.getSource()));
+    }
+  }
 }
