@@ -50,4 +50,12 @@ public class QuoteRuleTest extends AbstractTypografTest {
       assertEquals("<p>«„Газпром” свою стратегию. В слова „вылетает в трубу”! Таким образом».</p>", String.valueOf(p.getSource()));
     }
   }
+
+  public void testQuotesEndWithDot() {
+    final Typograf p = createProcessor("<p>ООО \"Кубаньгазпром\" активным коллективов \"<a href=\"/path/\">Факел</a>\".</p>");
+    if (p.process()) {
+      logger.info(String.valueOf(p.getSource()));
+      assertEquals("<p>ООО «Кубаньгазпром» активным коллективов «<a href=\"/path/\">Факел</a>».</p>", String.valueOf(p.getSource()));
+    }
+  }
 }
