@@ -4,6 +4,8 @@ import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.model.Word;
 import ru.artlebedev.typograf.rule.Rule;
 
+import java.util.logging.Logger;
+
 /**
  * Created by IntelliJ IDEA.
  * User: anton
@@ -11,7 +13,7 @@ import ru.artlebedev.typograf.rule.Rule;
  * Time: 12:27:50
  */
 public class ParseWordRule extends Rule implements CharRule {
-
+  private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
   private Word word = new Word();
 
   public void process() {
@@ -19,11 +21,9 @@ public class ParseWordRule extends Rule implements CharRule {
       if (p.hasNextChar && p.nextChar == ' ') {
         return;
       }
-//        int nextChar = p.charIndex + 1;
       // TODO вероятно пропущено добавление неразрывного пробела
-      p.setCurrentWord(word);
+      p.setAndHandleCurrentWord(word);
       word = new Word();
-//      p.charIndex += 1;
       p.updateChar(); // обновляем текущий char
       return;
     }
@@ -43,8 +43,7 @@ public class ParseWordRule extends Rule implements CharRule {
             || p.c == CharsInfo.ru1Left || p.c == CharsInfo.ru1Right
             || p.charIndex + 1 == p.source.length // не захватывает последний символ
         ) {
-      //int lengthBefore = word.Length;
-      p.setCurrentWord(word);
+      p.setAndHandleCurrentWord(word);
       word = new Word(); // обнуляем "внутреннее" слово
     } else {
       word.append(p.c);

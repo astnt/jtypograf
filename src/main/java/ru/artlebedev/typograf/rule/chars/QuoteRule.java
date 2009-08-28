@@ -83,9 +83,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
       mode = RIGHT;
     }
     if (p.c == CharsInfo.ru1Left  || p.c == CharsInfo.ru2Left)  { mode = LEFT; }
-    if (p.c == CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) {
-      mode = RIGHT;
-    }
+    if (p.c == CharsInfo.ru1Right || p.c == CharsInfo.ru2Right) { mode = RIGHT; }
     if (mode == LEFT) {
       if (p.style.equals(MainInfo.Lang.RU)) {
         if (currentLevel == 1) {

@@ -18,31 +18,31 @@ import java.util.List;
 public class Typograf {
   public char[] source;
 
-  public boolean isInText = false;
-  public boolean isInTitle = false;
-  public boolean isInTag = false;
-  public boolean isInScript = false;
-  public boolean isInStyle = false;
-  public boolean isInNoTypograf = false;
+  public boolean isInText;
+  public boolean isInTitle;
+  public boolean isInTag;
+  public boolean isInScript;
+  public boolean isInStyle;
+  public boolean isInNoTypograf;
+  public boolean isInAttribute;
 
   public char prevChar;
-  public boolean hasPrevChar = false;
+  public boolean hasPrevChar;
   public char c;
   public char nextChar;
-  public boolean hasNextChar = false;
 
-  public int charIndex = 0;
+  public boolean hasNextChar;
 
+  public int charIndex;
   private List<CharRule> charRules = new ArrayList<CharRule>();
   private List<WordRule> wordRules = new ArrayList<WordRule>();
   private Word currentWord;
   public Word prevWord;
-  public Word word;
 
+  public Word word;
   public MainInfo.Lang style = MainInfo.Lang.RU;
 
-  public void setCurrentWord(Word value) {
-    //if (value.Length > 0) Console.WriteLine(String.Format("[{0}][mode {1}]", value.Value, ModeType));
+  public void setAndHandleCurrentWord(Word value) {
     word = value;
     if (isInTag) {
       if (value.equals(scriptStart)) { isInScript = true; }
@@ -68,7 +68,6 @@ public class Typograf {
         if (currentWord != null && !currentWord.equals(nbsp)) {
           prevWord = currentWord;
         }
-
         // TODO
         for (WordRule rule : wordRules) {
           rule.process();
@@ -100,13 +99,7 @@ public class Typograf {
   public boolean process() {
     for (int i = 0; i < source.length; i++) {
       charIndex = i;
-      if (hasPrevChar = i - 1 > 0) {
-        prevChar = source[i - 1];
-      }
-      c = source[i];
-      if (hasNextChar = i + 1 < source.length - 1) {
-        nextChar = source[i + 1];
-      }
+      updateChars(i);
       for (CharRule charRule : charRules) {
         charRule.process();
       }
@@ -114,9 +107,18 @@ public class Typograf {
     return true;
   }
 
+  private void updateChars(int i) {
+    if (hasPrevChar = i - 1 > 0) {
+      prevChar = source[i - 1];
+    }
+    c = source[i];
+    if (hasNextChar = i + 1 < source.length - 1) {
+      nextChar = source[i + 1];
+    }
+  }
+
   public void updateChar() {
-    c = source[charIndex];
-    // TODO вероятно нужно prev и next chars обновить
+    updateChars(charIndex);
   }
 
   static final Word scriptStart = new Word("script");
