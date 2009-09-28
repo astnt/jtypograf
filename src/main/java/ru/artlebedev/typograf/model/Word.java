@@ -7,9 +7,9 @@ package ru.artlebedev.typograf.model;
  * Time: 12:29:33
  */
 public class Word {
-  public StringBuilder value;
-  public int hyphenCount = 0;
-  public boolean hasDigit = false;
+  public final StringBuilder value;
+  public int hyphenCount;
+  public boolean hasDigit;
 
   public Word() {
     value = new StringBuilder();
@@ -25,11 +25,10 @@ public class Word {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Word)) return false;
+    if (this == o) { return true; }
+    if (!(o instanceof Word)) { return false; }
     Word word = (Word) o;
-    if (!value.toString().equals(word.value.toString())) return false;
-    return true;
+    return value.toString().equals(word.value.toString());
   }
 
   @Override

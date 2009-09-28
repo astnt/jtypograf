@@ -57,7 +57,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
                     || p.prevChar == '('                
             )
             &&
-            (p.nextChar != '<' && p.prevChar != CharsInfo.space || true) // <p>Проект «<a href="#postId=13275">Сахалин-2</a>» начался.</p>
+            (p.nextChar != '<' && p.prevChar != CharsInfo.space && p.prevChar != CharsInfo.noBreakSpace || true) // <p>Проект «<a href="#postId=13275">Сахалин-2</a>» начался.</p>
                 && p.nextChar != CharsInfo.space
                 && p.nextChar != ','
         ) {

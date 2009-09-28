@@ -96,7 +96,7 @@ public class ShortWordRule extends Rule implements WordRule {
     }
   }
 
-  private int shortWordCount = 0;
+  private int shortWordCount;
   private final List<Word> common = new ArrayList<Word>();
   private final List<Word> particles = new ArrayList<Word>();
 

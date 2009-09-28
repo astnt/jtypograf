@@ -9,7 +9,7 @@ import ru.artlebedev.typograf.info.CharsInfo;
  * Time: 16:37:28
  */
 public class Util {
-  private static String LAT_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  private static final String LAT_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   public static boolean isInLatLetter(char c) {
     return LAT_LETTERS.indexOf(c) >= 0;

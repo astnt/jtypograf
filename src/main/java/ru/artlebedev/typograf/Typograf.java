@@ -121,17 +121,17 @@ public class Typograf {
     updateChars(charIndex);
   }
 
-  static final Word scriptStart = new Word("script");
-  static final Word scriptEnd = new Word("/script");
+  private static final Word scriptStart = new Word("script");
+  private static final Word scriptEnd = new Word("/script");
 
-  static final Word styleStart = new Word("style");
-  static final Word styleEnd = new Word("/style");
+  private static final Word styleStart = new Word("style");
+  private static final Word styleEnd = new Word("/style");
 
-  static final Word titleStart = new Word("title");
-  static final Word titleEnd = new Word("/title");
+  private static final Word titleStart = new Word("title");
+  private static final Word titleEnd = new Word("/title");
 
-  static final Word noTypografStart = new Word("notypograf");
-  static final Word noTypografEnd = new Word("/notypograf");
+  private static final Word noTypografStart = new Word("notypograf");
+  private static final Word noTypografEnd = new Word("/notypograf");
 
-  static final Word nbsp = new Word("nbsp");
+  private static final Word nbsp = new Word("nbsp");
 }
