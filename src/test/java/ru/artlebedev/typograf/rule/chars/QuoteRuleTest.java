@@ -59,6 +59,14 @@ public class QuoteRuleTest extends AbstractTypografTest {
     }
   }
 
+  public void testQuotes6() {
+    final Typograf p = createProcessor("<p>Cвою стратегию. В слова \"<a href=\"/test/\">вылетает</a>\";<b>в трубу</b>!.</p>");
+    if (p.process()) {
+      logger.info(String.valueOf(p.getSource()));
+      assertEquals("<p>Cвою стратегию. В слова «<a href=\"/test/\">вылетает</a>»;<b>в трубу</b>!.</p>", String.valueOf(p.getSource()));
+    }
+  }
+
   public void testQuotesEndWithDot() {
     final Typograf p = createProcessor("<p>ООО \"Кубаньгазпром\" активным коллективов \"<a href=\"/path/\">Факел</a>\".</p>");
     if (p.process()) {
