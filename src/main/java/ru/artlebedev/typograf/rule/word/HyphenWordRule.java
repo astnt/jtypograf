@@ -18,15 +18,13 @@ public class HyphenWordRule extends Rule implements WordRule {
   public void process()
   {
     if (p.word.hyphenCount == 0 && p.word.value.length() <= 1) { return; } // если нет дефисов
-    if (p.isInScript || p.isInTag || p.isInStyle || p.isInNoTypograf) { return; } // если не в правильном месте
+    if (p.isInScript || p.isInTag || p.isInStyle || p.isInNoTypograf || p.isInAttribute) { return; } // если не в правильном месте
     if (p.word.hyphenCount == 1)
     {
       int hyphenIndex = p.charIndex - p.word.value.length() + p.word.value.toString().indexOf('-');
-//      if (p.hasPrevChar && p.hasNextChar && CommonUtil.isDigitChar(p.prevChar) && CommonUtil.isDigitChar(p.nextChar)) {
       // TODO проверка, а может таких символов нет? (маловероятно на html-странице)
       if (Character.isDigit(p.source[hyphenIndex - 1]) && Character.isDigit(p.source[hyphenIndex + 1])) {
         p.source[hyphenIndex] = CharsInfo.ndash;
-//        p.source[hyphenIndex] = CharsInfo.mdash;
       }
     }
   }
