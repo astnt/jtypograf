@@ -29,28 +29,6 @@ public class TypografTest extends AbstractTypografTest {
     }
   }
 
-  public void testQuotes() throws IOException {
-    Typograf p = new Typograf("test is \"test\" test");
-    p.addRule(new DashRule());
-    p.addRule(new QuoteRule());
-    if (p.process()) {
-      assertWith("test is «test» test", p.getSource());
-    } else {
-      fail();
-    }
-  }
-
-  public void testQuotesSecondLevel() throws IOException {
-    Typograf p = new Typograf("test is \"test in \"somewhere\"\" test");
-    p.addRule(new DashRule());
-    p.addRule(new QuoteRule());
-    if (p.process()) {
-      assertWith("test is «test in „somewhere”» test", p.getSource());
-    } else {
-      fail();
-    }
-  }
-
   public void testParseWorldRule() throws IOException {
     Typograf p = new Typograf("one two three - four six, nine and \"left\" to the ");
     p.addRule(new DashRule());

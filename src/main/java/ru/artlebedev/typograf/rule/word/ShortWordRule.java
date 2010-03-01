@@ -32,7 +32,7 @@ public class ShortWordRule extends Rule implements WordRule {
         )
       {
         int nbspIndex = prevPrevIndex + 1;
-        if (p.source[nbspIndex] == ' ' && !p.word.equals(hyphenWord))
+        if (p.source[nbspIndex] == CharsInfo.space && !p.word.equals(hyphenWord))
         {
           p.source[nbspIndex] = CharsInfo.noBreakSpace;
           return;

@@ -3,6 +3,8 @@ package ru.artlebedev.typograf.rule.chars;
 import ru.artlebedev.typograf.AbstractTypografTest;
 import ru.artlebedev.typograf.Typograf;
 
+import java.io.IOException;
+
 /**
  * Created by IntelliJ IDEA.
  * User: anton
@@ -15,7 +17,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     if (p.process()) {
       final String result = String.valueOf(p.getSource());
       logger.info(result);
-      assertEquals("<p>«Комплекс стандартов „Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО „Газпром””»</p>" , result);
+      assertEquals("<p>«Комплекс стандартов „Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО „Газпром““»</p>" , result);
     }
   }
 
@@ -23,7 +25,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     final Typograf p = createProcessor("<p>\"\"Газпром\" предлагает\" полностью</p>");
     if (p.process()) {
       logger.info(String.valueOf(p.getSource()));
-      assertEquals("<p>«„Газпром” предлагает» полностью</p>", String.valueOf(p.getSource()));
+      assertEquals("<p>«„Газпром“ предлагает» полностью</p>", String.valueOf(p.getSource()));
     }
   }
 
@@ -55,7 +57,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     final Typograf p = createProcessor("<p>\"\"Газпром\" свою стратегию. В слова \"вылетает в трубу\"! Таким образом\".</p>");
     if (p.process()) {
       logger.info(String.valueOf(p.getSource()));
-      assertEquals("<p>«„Газпром” свою стратегию. В слова „вылетает в трубу”! Таким образом».</p>", String.valueOf(p.getSource()));
+      assertEquals("<p>«„Газпром“ свою стратегию. В слова „вылетает в трубу“! Таким образом».</p>", String.valueOf(p.getSource()));
     }
   }
 
@@ -74,4 +76,26 @@ public class QuoteRuleTest extends AbstractTypografTest {
       assertEquals("<p>ООО «Кубаньгазпром» активным коллективов «<a href=\"/path/\">Факел</a>».</p>", String.valueOf(p.getSource()));
     }
   }
+
+  public void testQuotes() throws IOException {
+    Typograf p = new Typograf("test is \"test\" test");
+    p.addRule(new DashRule());
+    p.addRule(new QuoteRule());
+    if (p.process()) {
+      assertWith("test is «test» test", p.getSource());
+    } else {
+      fail();
+    }
+  }
+
+  public void testQuotesSecondLevel() throws IOException {
+    Typograf p = new Typograf("test is \"test in \"somewhere\"\" test");
+    p.addRule(new DashRule());
+    p.addRule(new QuoteRule());
+    if (p.process()) {
+      assertWith("test is «test in „somewhere“» test", p.getSource());
+    } else {
+      fail();
+    }
+  }  
 }

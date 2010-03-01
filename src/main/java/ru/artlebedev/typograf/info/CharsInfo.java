@@ -17,7 +17,7 @@ public class CharsInfo {
   public static final char ru1Left = '\u00AB';
   public static final char ru1Right = '\u00BB';
   public static final char ru2Left = '\u201E';
-  public static final char ru2Right = '\u201D';
+  public static final char ru2Right = '\u201C';
 
   public static final char en1Left = '“';
   public static final char en1Right = '”';
