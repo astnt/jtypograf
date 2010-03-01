@@ -19,12 +19,21 @@ public class ModeRuleTest extends AbstractTypografTest {
       assertEquals(p.source[49], CharsInfo.ru1Right);
     }
   }
+
   public void testImgAlt() {
     final Typograf p = createProcessor("<img alt=\"Картинка - с типографикой и 'кавычкой'\" />");
     if (p.process()) {
       assertEquals(p.source[19], CharsInfo.mdash);
       assertEquals(p.source[38], CharsInfo.ru1Left);
       assertEquals(p.source[47], CharsInfo.ru1Right);
+    }
+  }
+
+  public void testImgAltWithInnerQuote() {
+    final Typograf p = createProcessor(
+        "<img alt=\"Картинка - с 'типографикой 'внутренней' и кавычкой'\" />");
+    if (p.process()) {
+      assertEquals(new String(p.source), "<img alt=\"Картинка — с «типографикой „внутренней“ и кавычкой»\" />");
     }
   }
 }
