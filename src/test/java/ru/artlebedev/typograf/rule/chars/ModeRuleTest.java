@@ -36,4 +36,13 @@ public class ModeRuleTest extends AbstractTypografTest {
       assertEquals(new String(p.source), "<img alt=\"Картинка — с «типографикой „внутренней“ и кавычкой»\" />");
     }
   }
+
+  public void testImgAltWithInnerQuote2() {
+    final Typograf p = createProcessor(
+        "<img alt=\"Делегация 'Газпрома' на ОАО 'ПО 'Севмаш''. Второй справа - Александр Ананенков\" />");
+    if (p.process()) {
+      logger.info(new String(p.source));
+      assertEquals(new String(p.source), "<img alt=\"Делегация «Газпрома» на ОАО «ПО „Севмаш“». Второй справа — Александр Ананенков\" />");
+    }
+  }
 }

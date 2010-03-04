@@ -77,6 +77,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.nextChar == '"'
             || p.nextChar == CharsInfo.ru1Right
             || p.nextChar == CharsInfo.ru2Right
+            || p.nextChar == '\''
             || p.nextChar == ')'
             || p.nextChar == '\r'
             || p.nextChar == '\n'
