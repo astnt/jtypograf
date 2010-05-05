@@ -97,5 +97,17 @@ public class QuoteRuleTest extends AbstractTypografTest {
     } else {
       fail();
     }
-  }  
+  }
+
+  public void testQuotesWithThreeDots() throws IOException {
+    Typograf p = new Typograf("three dots test is \"...test in \"somewhere\" text\" test");
+    p.addRule(new DashRule());
+    p.addRule(new QuoteRule());
+    if (p.process()) {
+      logger.info(new String(p.getSource()));
+      assertWith("three dots test is «...test in „somewhere“ text» test", p.getSource());
+    } else {
+      fail();
+    }
+  }
 }

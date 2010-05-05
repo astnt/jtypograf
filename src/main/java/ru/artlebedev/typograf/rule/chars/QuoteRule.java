@@ -46,7 +46,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         && Util.isInLatLetter(p.prevChar)
         ) { return; }
     // открывающая кавычка
-    if (p.hasNextChar && p.nextChar != '.' &&
+    if (p.hasNextChar && (p.nextChar != '.' || (p.nextChar == '.' && p.hasPrevChar && p.prevChar == CharsInfo.space)) &&
             (
                 p.prevChar == CharsInfo.space
                     || p.prevChar == CharsInfo.noBreakSpace
