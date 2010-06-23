@@ -115,8 +115,19 @@ public class QuoteRuleTest extends AbstractTypografTest {
     p.addRule(new DashRule());
     p.addRule(new QuoteRule());
     if (p.process()) {
-      logger.info(new String(p.getSource()));
       assertWith("Министр ее 55-летия, писал: «...горячо звания „Почетный работник газовой промышленности“ — достойной в отрасли.»", p.getSource());
+    } else {
+      fail();
+    }
+  }
+
+  public void testQuotesWithThreeDot() throws IOException {
+    Typograf p = new Typograf("\"Сегодня в проекте \"<a>Южный поток</a>\"\".");
+    p.addRule(new DashRule());
+    p.addRule(new QuoteRule());
+    if (p.process()) {
+      logger.info(new String(p.getSource()));
+      assertWith("«Сегодня в проекте „<a>Южный поток</a>“».", p.getSource());
     } else {
       fail();
     }

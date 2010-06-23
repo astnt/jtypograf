@@ -51,7 +51,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
                 p.prevChar == CharsInfo.space
                     || p.prevChar == CharsInfo.noBreakSpace
                     || p.prevChar == ';'
-                    || p.prevChar == '>'
+                    || (p.prevChar == '>' && p.source[p.charIndex + 2] != '.') // «Сегодня в проекте „<a>Южный поток</a>“».
                     || p.prevChar == '\r'
                     || p.prevChar == '\n'                
                     || p.prevChar == '('                
