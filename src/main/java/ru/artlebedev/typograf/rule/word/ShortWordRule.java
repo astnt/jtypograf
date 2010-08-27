@@ -88,7 +88,7 @@ public class ShortWordRule extends Rule implements WordRule {
       if (p.source.length <= p.charIndex) { return; }
       // Если следущая заглавная
       //if (CommonUtil.IsUpper(chars[nextChar]) && !CommonUtil.IsUpper(chars[prevChar])) return;
-      if (p.prevWord.value.length() != 0 && Character.isDigit(p.prevWord.getLastChar())) { return; }
+      if (p.prevWord != null && p.prevWord.value.length() != 0 && Character.isDigit(p.prevWord.getLastChar())) { return; }
 
       if (p.source.length > nextChar && p.source[nextChar] == '(') { return; }
 

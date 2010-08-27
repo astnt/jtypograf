@@ -112,7 +112,7 @@ public class Typograf {
       prevChar = source[i - 1];
     }
     c = source[i];
-    if (hasNextChar = i + 1 < source.length - 1) {
+    if (hasNextChar = i + 1 < source.length) {
       nextChar = source[i + 1];
     }
   }

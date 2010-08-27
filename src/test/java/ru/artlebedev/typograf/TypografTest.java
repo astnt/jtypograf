@@ -178,4 +178,21 @@ public class TypografTest extends AbstractTypografTest {
           "это экономический рост</p>", String.valueOf(p.getSource()));
     }
   }
+
+  public void testShortError1() {
+    final Typograf p = createProcessor("АО «Топэнерджи»");
+    if (p.process()) {
+      assertEquals("АО «Топэнерджи»", String.valueOf(p.getSource()));
+    }
+    // NullPointerException here
+  }
+
+  public void testShortError2() {
+    final Typograf p = createProcessor("542-2010-03/0900/22-1006/4 \"test\"");
+    if (p.process()) {
+      logger.info(String.valueOf(p.getSource()));
+      assertEquals("542-2010-03/0900/22-1006/4 «test»", String.valueOf(p.getSource()));
+    }
+    // NullPointerException here
+  }
 }
