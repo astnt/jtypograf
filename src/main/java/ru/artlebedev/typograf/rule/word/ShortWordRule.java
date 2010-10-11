@@ -49,7 +49,7 @@ public class ShortWordRule extends Rule implements WordRule {
       if (common.contains(p.word))
       {
         shortWordCount++;
-        if (shortWordCount > 2)
+        if (shortWordCount > 2 || moreThenTwoLetters.contains(p.word))
         {
           shortWordCount = 0;
           return;
@@ -70,7 +70,7 @@ public class ShortWordRule extends Rule implements WordRule {
 
     // свзяваем неразрывнам пробелом со следующим словом
     if (
-         p.word.value.length() < 3
+         (p.word.value.length() < 3 || moreThenTwoLetters.contains(p.word))
       && p.word.value.length() != 0
       && p.c == ' '
 //!      && !particles.Exists(delegate(Model.Word sb) { return sb.Equals(p.word); }) // не частица
@@ -97,17 +97,10 @@ public class ShortWordRule extends Rule implements WordRule {
   }
 
   private int shortWordCount;
-  private final List<Word> common = new ArrayList<Word>();
-  private final List<Word> particles = new ArrayList<Word>();
-
-  /// <summary>
-  /// Искючения к которым привязывается предлоги справа.
-  /// </summary>
-  private final List<Word> rightExceptions = new ArrayList<Word>();
-  private final Word dot = new Word(".");
-  private final Word question = new Word("?");
-  public ShortWordRule()
-  {
+  private static final List<Word> common = new ArrayList<Word>();
+  private static final List<Word> particles = new ArrayList<Word>();
+  private static final List<Word> moreThenTwoLetters = new ArrayList<Word>();
+  static {
     //my $preps = "я|ты|мы|вы|не|ни|на|но|в|во|до|от|и|а|ее|".
     //      "он|с|со|о|об|ну|к|ко|за|их|из|ей|ой|ай";
     //my $posts = "ли|ль|же|ж|бы|б";
@@ -119,13 +112,26 @@ public class ShortWordRule extends Rule implements WordRule {
     particles.add(new Word("бы"));
     particles.add(new Word("/"));
     //particles.Add(new Word("г."));
+
+    moreThenTwoLetters.add(new Word("для"));
+    moreThenTwoLetters.add(new Word("под"));
+    moreThenTwoLetters.add(new Word("над"));
+
   }
+
+  /// <summary>
+  /// Искючения к которым привязывается предлоги справа.
+  /// </summary>
+  private static final List<Word> rightExceptions = new ArrayList<Word>();
+  private static final Word dot = new Word(".");
+  private static final Word question = new Word("?");
+  public ShortWordRule() { }
 
   /// <summary>
   /// Добавляет исключения к которым привязываются короткие слов справа.
   /// </summary>
   /// <param name="exceptionWord"></param>
-  public void AddRightException(Word exceptionWord)
+  public void addRightException(Word exceptionWord)
   {
     rightExceptions.add(exceptionWord);
   }

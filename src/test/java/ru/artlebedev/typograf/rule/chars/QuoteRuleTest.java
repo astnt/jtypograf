@@ -17,7 +17,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     if (p.process()) {
       final String result = String.valueOf(p.getSource());
       logger.info(result);
-      assertEquals("<p>«Комплекс стандартов „Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО „Газпром““»</p>" , result);
+      assertEquals("<p>«Комплекс стандартов „Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО „Газпром““»</p>" , result);
     }
   }
 
