@@ -24,12 +24,13 @@ public class DashRule extends AbstractCharRule implements CharRule {
     }
     if (p.hasPrevChar && p.hasNextChar) {
       if (
-          p.prevChar == ' '
+          p.prevChar == CharsInfo.space
               || p.prevChar == CharsInfo.noBreakSpace
               || p.prevChar == ';'
               || p.prevChar == '>'
               || p.prevChar == '\r'
               || p.prevChar == '\n'
+              || p.prevChar == '\t'
               && p.nextChar == CharsInfo.space
           ) {
         if (p.style.equals(MainInfo.Lang.RU)) {
