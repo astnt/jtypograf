@@ -121,6 +121,16 @@ public class QuoteRuleTest extends AbstractTypografTest {
     }
   }
 
+  public void testQuotesForSingleLine() throws IOException {
+    Typograf p = new Typograf("Протокол заседания Котировочной комиссии ОАО 'Газпром'");
+    p.addRules();
+    if (p.process()) {
+      assertWith("Протокол заседания Котировочной комиссии ОАО «Газпром»", p.getSource());
+    } else {
+      fail();
+    }
+  }
+
   public void testQuotesWithThreeDot() throws IOException {
     Typograf p = new Typograf("\"Сегодня в проекте \"<a>Южный поток</a>\"\".");
     p.addRule(new DashRule());

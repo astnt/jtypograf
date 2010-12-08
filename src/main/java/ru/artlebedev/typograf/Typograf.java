@@ -4,6 +4,13 @@ import ru.artlebedev.typograf.info.MainInfo;
 import ru.artlebedev.typograf.model.Word;
 import ru.artlebedev.typograf.rule.Rule;
 import ru.artlebedev.typograf.rule.chars.CharRule;
+import ru.artlebedev.typograf.rule.chars.DashRule;
+import ru.artlebedev.typograf.rule.chars.ModeRule;
+import ru.artlebedev.typograf.rule.chars.ParseWordRule;
+import ru.artlebedev.typograf.rule.chars.QuoteRule;
+import ru.artlebedev.typograf.rule.word.HyphenWordRule;
+import ru.artlebedev.typograf.rule.word.MeasureRule;
+import ru.artlebedev.typograf.rule.word.ShortWordRule;
 import ru.artlebedev.typograf.rule.word.WordRule;
 
 import java.util.ArrayList;
@@ -84,6 +91,22 @@ public class Typograf {
 
   public Typograf(String source) {
     this.source = source.toCharArray();
+  }
+
+  /**
+   * Make default rules setups.
+   */
+  public void addRules() {
+    addRule(new ParseWordRule());
+    addRule(new ModeRule());
+    addRule(new DashRule());
+    addRule(new QuoteRule());
+
+    addRule(new ShortWordRule());
+    addRule(new HyphenWordRule());
+    addRule(new MeasureRule());
+
+    style = MainInfo.Lang.RU;
   }
 
   public void addRule(CharRule charRule) {
