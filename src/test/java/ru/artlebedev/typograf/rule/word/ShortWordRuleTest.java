@@ -31,4 +31,18 @@ public class ShortWordRuleTest extends AbstractTypografTest {
       assertEquals(p.source[15], CharsInfo.noBreakSpace);
     }
   }
+
+  public void testWithShortWord3Letters4() {
+    final Typograf p = createProcessor("Предложение RUB тестом.");
+    if (p.process()) {
+      assertEquals(p.source[15], CharsInfo.noBreakSpace);
+    }
+  }
+
+  public void testWithShortWord3Letters5() {
+    final Typograf p = createProcessor("Предложение USD тестом.");
+    if (p.process()) {
+      assertEquals(p.source[15], CharsInfo.noBreakSpace);
+    }
+  }
 }

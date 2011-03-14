@@ -32,6 +32,8 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             && p.c != CharsInfo.ru1Left
             && p.c != CharsInfo.en1Left
             && p.c != CharsInfo.ru1Right
+//            && p.c != '«'
+//            && p.c != '»'
         ) { return; }
     if (
         p.isInScript
@@ -82,6 +84,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.nextChar == ')'
             || p.nextChar == '\r'
             || p.nextChar == '\n'
+            || p.nextChar == '&'
         ) {
       mode = RIGHT;
     }

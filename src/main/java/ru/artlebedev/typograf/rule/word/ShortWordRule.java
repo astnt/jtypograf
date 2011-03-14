@@ -116,7 +116,8 @@ public class ShortWordRule extends Rule implements WordRule {
     moreThenTwoLetters.add(new Word("для"));
     moreThenTwoLetters.add(new Word("под"));
     moreThenTwoLetters.add(new Word("над"));
-
+    moreThenTwoLetters.add(new Word("RUB"));
+    moreThenTwoLetters.add(new Word("USD"));
   }
 
   /// <summary>

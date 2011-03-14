@@ -162,4 +162,39 @@ public class QuoteRuleTest extends AbstractTypografTest {
       fail();
     }
   }
+
+  public void test2QuotesAndComma() {
+    Typograf p = new Typograf("Компания \"Газпром нефть\" контролирует ОАО \"Московский НПЗ\" " +
+        "(установленная мощность 12,15&nbsp;млн т&nbsp;в&nbsp;год) " +
+        "и&nbsp;50% ОАО \"НГК \"Славнефть\"\", владеющей двумя нефтеперерабатывающими заводами");
+    p.addRule(new DashRule());
+    p.addRule(new QuoteRule());
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertTrue(result.contains("«НГК „Славнефть“»"));
+    } else {
+      fail();
+    }
+  }
+
+  public void test2QuotesAndComma2() {
+//    String file = null;
+//    try {
+//      file = FileUtils.readFileToString(new File("/mnt/sda1/tmp/page.txt"), "utf8");
+//    } catch (IOException e) {
+//      logger.log(Level.SEVERE, "io", e);
+//    }
+    Typograf p = new Typograf("ОАО \"Салаватнефтеоргсинтез\"&nbsp;- тест \"следующей\" кавычки");
+//    Typograf p = new Typograf(file);
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("ОАО «Салаватнефтеоргсинтез»&nbsp;— тест «следующей» кавычки",
+          p.getSource());
+    } else {
+      fail();
+    }
+  }
 }
