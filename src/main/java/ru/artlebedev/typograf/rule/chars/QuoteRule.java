@@ -29,11 +29,11 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
     if (
         p.c != '"'
             && p.c != '\''
-            && p.c != CharsInfo.ru1Left
             && p.c != CharsInfo.en1Left
+            && p.c != CharsInfo.ru1Left
             && p.c != CharsInfo.ru1Right
-//            && p.c != '«'
-//            && p.c != '»'
+            && p.c != CharsInfo.ru2Left
+            && p.c != CharsInfo.ru2Right
         ) { return; }
     if (
         p.isInScript

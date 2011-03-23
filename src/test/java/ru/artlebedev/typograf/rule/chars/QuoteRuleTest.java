@@ -197,4 +197,17 @@ public class QuoteRuleTest extends AbstractTypografTest {
       fail();
     }
   }
+
+  public void test2QuotesAndComma3() {
+    Typograf p = new Typograf("текст «НГК „Славнефть“» текст");
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("текст «НГК „Славнефть“» текст",
+          p.getSource());
+    } else {
+      fail();
+    }
+  }
 }
