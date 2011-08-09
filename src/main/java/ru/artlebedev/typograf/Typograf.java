@@ -121,11 +121,12 @@ public class Typograf {
 
   public boolean process() {
     for (int i = 0; i < source.length; i++) {
-      charIndex = i;
+      charIndex = i; // TODO
       updateChars(i);
       for (CharRule charRule : charRules) {
         charRule.process();
       }
+      i = charIndex;
     }
     return true;
   }

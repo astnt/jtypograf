@@ -210,4 +210,31 @@ public class QuoteRuleTest extends AbstractTypografTest {
       fail();
     }
   }
+
+  public void testImgAlt() {
+    Typograf p = new Typograf("<img src=\"/preview/f/posts/34/840639/w350_gazprominfo-anon-01.jpg\" width=\"350\" height=\"448\" " +
+        "alt=\"'Газпром' открыл новый сайт - 'Информаторий'\"/>");
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("<img src=\"/preview/f/posts/34/840639/w350_gazprominfo-anon-01.jpg\" width=\"350\" height=\"448\" alt=\"«Газпром» открыл новый сайт — «Информаторий»\"/>",
+          p.getSource());
+    } else {
+      fail();
+    }
+  }
+
+  public void testImgAlt2() {
+    Typograf p = new Typograf("test 'Газпром' открыл новый сайт - 'Информаторий' ");
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("test «Газпром» открыл новый сайт — «Информаторий» ",
+          p.getSource());
+    } else {
+      fail();
+    }
+  }
 }
