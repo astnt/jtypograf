@@ -8,6 +8,6 @@ package ru.artlebedev.typograf.info;
  */
 public class MainInfo {
   public enum Lang {
-    RU, EN
+    RU, EN, DE;
   }
 }

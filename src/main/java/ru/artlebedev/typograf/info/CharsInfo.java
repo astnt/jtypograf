@@ -23,4 +23,9 @@ public class CharsInfo {
   public static final char en1Right = '”';
   public static final char en2Left = '‘';
   public static final char en2Right = '’';
+
+  public static final char de1Left = '„';
+  public static final char de1Right = '“';
+  public static final char de2Left = '„';
+  public static final char de2Right = '“';
 }

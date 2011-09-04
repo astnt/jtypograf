@@ -2,6 +2,7 @@ package ru.artlebedev.typograf.rule.chars;
 
 import ru.artlebedev.typograf.AbstractTypografTest;
 import ru.artlebedev.typograf.Typograf;
+import ru.artlebedev.typograf.info.MainInfo;
 
 import java.io.IOException;
 
@@ -233,6 +234,19 @@ public class QuoteRuleTest extends AbstractTypografTest {
       logger.info(result);
       assertWith("test «Газпром» открыл новый сайт — «Информаторий» ",
           p.getSource());
+    } else {
+      fail();
+    }
+  }
+
+  public void testDeQuotes() {
+    Typograf p = new Typograf("Doktrin der \"einheitlichen sozialistischen Staatsmacht\" galt");
+    p.addRules();
+    p.style = MainInfo.Lang.DE;
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("Doktrin der „einheitlichen sozialistischen Staatsmacht“ galt", p.getSource());
     } else {
       fail();
     }

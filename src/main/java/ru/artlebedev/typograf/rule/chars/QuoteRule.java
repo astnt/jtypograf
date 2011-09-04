@@ -33,7 +33,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             && p.c != CharsInfo.ru1Left
             && p.c != CharsInfo.ru1Right
             && p.c != CharsInfo.ru2Left
-            && p.c != CharsInfo.ru2Right
+            && p.c != CharsInfo.ru2Right // “ ”
         ) { return; }
     if (
         p.isInScript
@@ -41,7 +41,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.isInStyle
             || p.isInNoTypograf
         ) { return; }
-    if (p.style.equals(MainInfo.Lang.EN) && p.c == '\'') { return; } // HACK фикс для английской типографики
+    if ((p.style.equals(MainInfo.Lang.EN) || p.style.equals(MainInfo.Lang.DE)) && p.c == '\'') { return; } // HACK фикс для английской типографики
     // Проблема с "Международное Standard & Poor's подтвердило" в русском тексте
     if (p.c == '\''
         && Util.isInLatLetter(p.nextChar)
@@ -104,6 +104,12 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
         } else if (currentLevel > 1) {
           p.source[p.charIndex] = CharsInfo.en2Left;
         }
+      } else if (p.style.equals(MainInfo.Lang.DE)) {
+        if (currentLevel == 1) {
+          p.source[p.charIndex] = CharsInfo.de1Left;
+        } else if (currentLevel > 1) {
+          p.source[p.charIndex] = CharsInfo.de2Left;
+        }
       }
       currentLevel += 1;
     } else if (mode == RIGHT) {
@@ -119,6 +125,12 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
           p.source[p.charIndex] = CharsInfo.en1Right;
         } else if (currentLevel > 1) {
           p.source[p.charIndex] = CharsInfo.en2Right;
+        }
+      } else if (p.style.equals(MainInfo.Lang.DE)) {
+        if (currentLevel == 1) {
+          p.source[p.charIndex] = CharsInfo.de1Right;
+        } else if (currentLevel > 1) {
+          p.source[p.charIndex] = CharsInfo.de2Right;
         }
       }
     }
