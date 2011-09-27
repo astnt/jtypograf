@@ -258,7 +258,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     if (p.process()) {
       String result = new String(p.getSource());
       logger.info(result);
-      assertWith("test «Хартия'97“ test",
+      assertWith("test «Хартия'97» test",
           p.getSource());
     } else {
       fail();

@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ru.artlebedev.jtypograf</groupId>
   <artifactId>jtypograf</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <packaging>jar</packaging>
   <name>Java Typograf</name>
   <description>
@@ -20,6 +20,10 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
   <scm>
     <url>http://code.google.com/p/jtypograf/source/browse</url>
     <connection>
