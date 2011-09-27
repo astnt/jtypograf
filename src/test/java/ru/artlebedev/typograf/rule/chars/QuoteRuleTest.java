@@ -1,10 +1,10 @@
 package ru.artlebedev.typograf.rule.chars;
 
+import java.io.IOException;
+
 import ru.artlebedev.typograf.AbstractTypografTest;
 import ru.artlebedev.typograf.Typograf;
 import ru.artlebedev.typograf.info.MainInfo;
-
-import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -247,6 +247,19 @@ public class QuoteRuleTest extends AbstractTypografTest {
       String result = new String(p.getSource());
       logger.info(result);
       assertWith("Doktrin der „einheitlichen sozialistischen Staatsmacht“ galt", p.getSource());
+    } else {
+      fail();
+    }
+  }
+
+  public void testApostropheInWord() {
+    Typograf p = new Typograf("test \"Хартия'97\" test");
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("test «Хартия'97“ test",
+          p.getSource());
     } else {
       fail();
     }

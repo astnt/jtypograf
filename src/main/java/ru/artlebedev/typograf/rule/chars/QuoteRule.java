@@ -1,10 +1,10 @@
 package ru.artlebedev.typograf.rule.chars;
 
+import java.util.logging.Logger;
+
 import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.info.MainInfo;
 import ru.artlebedev.typograf.util.Util;
-
-import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,15 +26,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
   }
 
   public void process() {
-    if (
-        p.c != '"'
-            && p.c != '\''
-            && p.c != CharsInfo.en1Left
-            && p.c != CharsInfo.ru1Left
-            && p.c != CharsInfo.ru1Right
-            && p.c != CharsInfo.ru2Left
-            && p.c != CharsInfo.ru2Right // “ ”
-        ) { return; }
+    if (!CharsInfo.isQuoteSymbol(p.c)) { return; }
     if (
         p.isInScript
             || p.isInTag
@@ -42,6 +34,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.isInNoTypograf
         ) { return; }
     if ((p.style.equals(MainInfo.Lang.EN) || p.style.equals(MainInfo.Lang.DE)) && p.c == '\'') { return; } // HACK фикс для английской типографики
+    if ((p.hasPrevChar && Util.isNotSpaceOrQuote(p.prevChar)) && (p.hasNextChar  && Util.isNotSpaceOrQuote(p.nextChar)) && p.c == '\'') { return; }
     // Проблема с "Международное Standard & Poor's подтвердило" в русском тексте
     if (p.c == '\''
         && Util.isInLatLetter(p.nextChar)

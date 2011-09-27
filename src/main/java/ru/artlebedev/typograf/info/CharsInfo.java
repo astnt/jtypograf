@@ -28,4 +28,14 @@ public class CharsInfo {
   public static final char de1Right = '“';
   public static final char de2Left = '„';
   public static final char de2Right = '“';
+
+  public static boolean isQuoteSymbol(char c) {
+    return c == '"'
+        || c == '\''
+        || c == en1Left
+        || c == ru1Left
+        || c == ru1Right
+        || c == ru2Left
+        || c == ru2Right;
+  }
 }

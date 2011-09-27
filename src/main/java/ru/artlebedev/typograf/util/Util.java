@@ -22,4 +22,8 @@ public class Util {
   public static boolean wordEnd(char c) {
     return c == '<' || c == CharsInfo.space || c == CharsInfo.noBreakSpace || c == ')';
   }
+
+  public static boolean isNotSpaceOrQuote(char c) {
+    return c != CharsInfo.space && c != CharsInfo.noBreakSpace && !CharsInfo.isQuoteSymbol(c);
+  }
 }
