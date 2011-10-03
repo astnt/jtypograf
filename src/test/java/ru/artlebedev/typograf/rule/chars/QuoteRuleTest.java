@@ -264,4 +264,17 @@ public class QuoteRuleTest extends AbstractTypografTest {
       fail();
     }
   }
+
+  public void testApostropheInWord2() {
+    Typograf p = new Typograf("test 'Хартия'</p><p>test 'test' test");
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("test «Хартия»</p><p>test «test» test",
+          p.getSource());
+    } else {
+      fail();
+    }
+  }
 }

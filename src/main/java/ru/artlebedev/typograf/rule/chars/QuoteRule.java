@@ -34,7 +34,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.isInNoTypograf
         ) { return; }
     if ((p.style.equals(MainInfo.Lang.EN) || p.style.equals(MainInfo.Lang.DE)) && p.c == '\'') { return; } // HACK фикс для английской типографики
-    if ((p.hasPrevChar && Util.isNotSpaceOrQuote(p.prevChar)) && (p.hasNextChar  && Util.isNotSpaceOrQuote(p.nextChar)) && p.c == '\'') { return; }
+    if ((p.hasPrevChar && Util.isLetter(p.prevChar)) && (p.hasNextChar  && Util.isLetter(p.nextChar)) && p.c == '\'') { return; }
     // Проблема с "Международное Standard & Poor's подтвердило" в русском тексте
     if (p.c == '\''
         && Util.isInLatLetter(p.nextChar)
