@@ -277,4 +277,21 @@ public class QuoteRuleTest extends AbstractTypografTest {
       fail();
     }
   }
+
+  public void testTitleBug() {
+    Typograf p = new Typograf("<p>test \"test\" test</p><img src=\"/f/posts/13/673660/strategy_ru.jpg\" alt=\"\" width=\"700\" height=\"333\" title=\"\"/></div> \n" +
+        "<p> \n" +
+        "\tTest \"test\" test.</p>");
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("<p>test «test» test</p><img src=\"/f/posts/13/673660/strategy_ru.jpg\" alt=\"\" width=\"700\" height=\"333\" title=\"\"/></div> \n" +
+          "<p> \n" +
+          "\tTest «test» test.</p>",
+          p.getSource());
+    } else {
+      fail();
+    }
+  }
 }

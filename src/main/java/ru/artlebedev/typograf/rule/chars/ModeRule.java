@@ -28,6 +28,9 @@ public class ModeRule extends Rule implements CharRule {
     } else if (p.c == '>') {
       p.isInTag = false;
       p.isInText = true;
+    } else if (p.isInTag && p.c == '"' && p.hasNextChar && p.nextChar == '"') { // skip empty attributes: title=""
+      p.charIndex += 2;
+      p.updateChar();
     } else if (p.isInAttribute && p.c == '"') { // TODO
       p.isInTag = true;
       p.isInText = false;

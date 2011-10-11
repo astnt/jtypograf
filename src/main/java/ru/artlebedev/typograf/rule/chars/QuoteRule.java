@@ -36,6 +36,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
     if ((p.style.equals(MainInfo.Lang.EN) || p.style.equals(MainInfo.Lang.DE)) && p.c == '\'') { return; } // HACK фикс для английской типографики
     if ((p.hasPrevChar && Util.isLetter(p.prevChar)) && (p.hasNextChar  && Util.isLetter(p.nextChar)) && p.c == '\'') { return; }
     // Проблема с "Международное Standard & Poor's подтвердило" в русском тексте
+//    if (p.isInAttribute && ((p.hasPrevChar && p.prevChar == '\"') || (p.hasNextChar && p.nextChar == '"'))) { return; }
     if (p.c == '\''
         && Util.isInLatLetter(p.nextChar)
         && Util.isInLatLetter(p.prevChar)
