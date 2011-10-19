@@ -294,4 +294,17 @@ public class QuoteRuleTest extends AbstractTypografTest {
       fail();
     }
   }
+
+  public void testXmlns() {
+    Typograf p = new Typograf("test \"test\" <noindex xmlns=\"\">\"Сахалин-2\"</noindex> test \"test\" test");
+    p.addRules();
+    if (p.process()) {
+      String result = new String(p.getSource());
+      logger.info(result);
+      assertWith("test «test» <noindex xmlns=\"\">«Сахалин-2»</noindex> test «test» test",
+          p.getSource());
+    } else {
+      fail();
+    }
+  }
 }

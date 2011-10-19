@@ -15,11 +15,13 @@ public class ModeRule extends Rule implements CharRule {
   private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
   private static final Word W_TITLE = new Word("title=");
   private static final Word W_ALT = new Word("alt=");
+  private boolean attributeWasEmpty;
 
   public void process() {
-    if (p.c == '<' && !p.isInScript
-        || p.c == '<' && p.isInScript && p.source[p.charIndex + 1] == '/' // ФИКС: <script> if(a<script){ fuck; }</script> test - test
-        )
+    if (
+           (p.c == '<' && !p.isInScript)
+        || (p.c == '<' &&  p.isInScript && p.nextChar == '/') // ФИКС: <script> if(a<script){ fuck; }</script> test - test
+       )
     {
       if (p.isInText) {
         p.isInText = false;
@@ -30,7 +32,10 @@ public class ModeRule extends Rule implements CharRule {
       p.isInText = true;
     } else if (p.isInTag && p.c == '"' && p.hasNextChar && p.nextChar == '"') { // skip empty attributes: title=""
       p.charIndex += 2;
+      p.isInAttribute = false;
       p.updateChar();
+      attributeWasEmpty = true;
+      process();
     } else if (p.isInAttribute && p.c == '"') { // TODO
       p.isInTag = true;
       p.isInText = false;
@@ -38,6 +43,10 @@ public class ModeRule extends Rule implements CharRule {
       p.charIndex += 1;
       p.updateChar();
     } else if (p.isInTag && p.word != null && (p.word.equals(W_TITLE) || p.word.equals(W_ALT) )) {
+      if (attributeWasEmpty) {
+        attributeWasEmpty = false;
+        return;
+      }
       p.isInTag = false;
       p.isInText = true;
       p.isInAttribute = true;
