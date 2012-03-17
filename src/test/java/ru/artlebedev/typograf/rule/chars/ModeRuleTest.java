@@ -45,4 +45,13 @@ public class ModeRuleTest extends AbstractTypografTest {
       assertEquals(new String(p.source), "<img alt=\"Делегация «Газпрома» на ОАО «ПО „Севмаш“». Второй справа — Александр Ананенков\" />");
     }
   }
+
+  public void testImgAltWithInnerQuote3() {
+    final Typograf p = createProcessor(
+        "<span title=\"1\"> Виталий Маркелов: объекты \"Портовой\" </span>");
+    if (p.process()) {
+      logger.info(new String(p.source));
+      assertEquals(new String(p.source), "<span title=\"1\"> Виталий Маркелов: объекты «Портовой» </span>");
+    }
+  }
 }

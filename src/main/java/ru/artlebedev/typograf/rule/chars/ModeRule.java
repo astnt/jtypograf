@@ -1,9 +1,9 @@
 package ru.artlebedev.typograf.rule.chars;
 
+import java.util.logging.Logger;
+
 import ru.artlebedev.typograf.model.Word;
 import ru.artlebedev.typograf.rule.Rule;
-
-import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -40,7 +40,6 @@ public class ModeRule extends Rule implements CharRule {
       p.isInTag = true;
       p.isInText = false;
       p.isInAttribute = false;
-      p.charIndex += 1;
       p.updateChar();
     } else if (p.isInTag && p.word != null && (p.word.equals(W_TITLE) || p.word.equals(W_ALT) )) {
       if (attributeWasEmpty) {
