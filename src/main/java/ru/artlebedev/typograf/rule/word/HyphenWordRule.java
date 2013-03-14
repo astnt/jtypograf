@@ -3,8 +3,7 @@ package ru.artlebedev.typograf.rule.word;
 import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.rule.Rule;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
  * Time: 11:47:42
  */
 public class HyphenWordRule extends Rule implements WordRule {
-  protected final transient Log log = LogFactory.getLog(getClass());
+  protected final transient Logger log = Logger.getLogger(HyphenWordRule.class.getName());
 
   public void process()
   {

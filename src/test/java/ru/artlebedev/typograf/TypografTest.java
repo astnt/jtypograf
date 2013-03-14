@@ -6,7 +6,8 @@ import ru.artlebedev.typograf.rule.chars.DashRule;
 import ru.artlebedev.typograf.rule.chars.ParseWordRule;
 import ru.artlebedev.typograf.rule.chars.QuoteRule;
 
-import org.apache.commons.io.FileUtils;
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class TypografTest extends AbstractTypografTest {
 
   public void testSafity1() throws IOException {
     final File file = new File(getClass().getResource("/source.txt").getFile());
-    final String source = FileUtils.readFileToString(file);
+    final String source = Files.toString(file, Charsets.UTF_8);
     Typograf p = createProcessor(source);
     if (p.process()) {
       // ?
