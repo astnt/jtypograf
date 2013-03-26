@@ -14,16 +14,16 @@ import java.util.logging.Logger;
  */
 public class ParseWordRule extends Rule implements CharRule {
   private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
-  private Word word = new Word();
+  private StringBuilder word = new StringBuilder();
 
   public void process() {
-    if (p.c == '.' && word.value.length() == 1 && Character.isUpperCase(word.charAt(0))) {
+    if (p.c == '.' && word.length() == 1 && Character.isUpperCase(word.charAt(0))) {
       if (p.hasNextChar && p.nextChar == ' ') {
         return;
       }
       // TODO вероятно пропущено добавление неразрывного пробела
-      p.setAndHandleCurrentWord(word);
-      word = new Word();
+      p.setAndHandleCurrentWord(new Word(word));
+      word.delete(0, word.length());
       p.updateChar(); // обновляем текущий char
       return;
     }
@@ -43,8 +43,8 @@ public class ParseWordRule extends Rule implements CharRule {
             || p.c == CharsInfo.ru1Left || p.c == CharsInfo.ru1Right
             || p.charIndex + 1 == p.source.length // не захватывает последний символ
         ) {
-      p.setAndHandleCurrentWord(word);
-      word = new Word(); // обнуляем "внутреннее" слово
+      p.setAndHandleCurrentWord(new Word(word));
+      word.delete(0, word.length()); // обнуляем "внутреннее" слово
     } else {
       word.append(p.c);
     }

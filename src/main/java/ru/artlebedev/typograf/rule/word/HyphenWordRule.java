@@ -17,7 +17,7 @@ public class HyphenWordRule extends Rule implements WordRule {
   public void process()
   {
     if (p.word.hyphenCount == 0 && p.word.value.length() <= 1) { return; } // если нет дефисов
-    if (p.isInScript || p.isInTag || p.isInStyle || p.isInNoTypograf || p.isInAttribute) { return; } // если не в правильном месте
+    if (p.isInScript || p.isInTag || p.isInStyle || p.isInNoTypograf || p.isInAttribute || p.isInAttributeIgnore) { return; } // если не в правильном месте
     if (p.word.hyphenCount == 1)
     {
       int hyphenIndex = p.charIndex - p.word.value.length() + p.word.value.toString().indexOf('-');

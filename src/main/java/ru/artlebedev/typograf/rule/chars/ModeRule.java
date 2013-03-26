@@ -1,9 +1,9 @@
 package ru.artlebedev.typograf.rule.chars;
 
-import java.util.logging.Logger;
-
 import ru.artlebedev.typograf.model.Word;
 import ru.artlebedev.typograf.rule.Rule;
+
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,12 +15,13 @@ public class ModeRule extends Rule implements CharRule {
   private static Logger logger = Logger.getLogger("ru.artlebedev.typograf");
   private static final Word W_TITLE = new Word("title=");
   private static final Word W_ALT = new Word("alt=");
+  private static final Word W_DATA = new Word("data-data=");
   private boolean attributeWasEmpty;
 
   public void process() {
     if (
-           (p.c == '<' && !p.isInScript)
-        || (p.c == '<' &&  p.isInScript && p.nextChar == '/') // ФИКС: <script> if(a<script){ fuck; }</script> test - test
+           (p.c == '<' && !p.isInScript && !p.isInAttributeIgnore)
+        || (p.c == '<' && p.isInScript && p.nextChar == '/' && !p.isInAttributeIgnore) // ФИКС: <script> if(a<script){ fuck; }</script> test - test
        )
     {
       if (p.isInText) {
@@ -41,6 +42,11 @@ public class ModeRule extends Rule implements CharRule {
       p.isInText = false;
       p.isInAttribute = false;
       p.updateChar();
+    } else if (p.isInAttributeIgnore && p.c == '"') { // TODO
+      p.isInTag = true;
+      p.isInText = false;
+      p.isInAttributeIgnore = false;
+      p.updateChar();
     } else if (p.isInTag && p.word != null && (p.word.equals(W_TITLE) || p.word.equals(W_ALT) )) {
       if (attributeWasEmpty) {
         attributeWasEmpty = false;
@@ -52,6 +58,11 @@ public class ModeRule extends Rule implements CharRule {
       p.charIndex += 1;
       if (p.source[p.charIndex] == '"') { p.charIndex += 1; }
       p.updateChar();
+    } else if (p.isInTag && p.word != null && p.word.value.startsWith("data-") && p.word.value.endsWith("=")) {
+      p.isInTag = false;
+      p.isInText = true;
+      p.isInAttributeIgnore = true;
+      p.charIndex += 1;
     }
   }
 }

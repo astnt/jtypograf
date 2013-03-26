@@ -1,10 +1,10 @@
 package ru.artlebedev.typograf.rule.chars;
 
-import java.util.logging.Logger;
-
 import ru.artlebedev.typograf.info.CharsInfo;
 import ru.artlebedev.typograf.info.MainInfo;
 import ru.artlebedev.typograf.util.Util;
+
+import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,6 +32,7 @@ public class QuoteRule extends AbstractCharRule implements CharRule {
             || p.isInTag
             || p.isInStyle
             || p.isInNoTypograf
+            || p.isInAttributeIgnore
         ) { return; }
     if ((p.style.equals(MainInfo.Lang.EN) || p.style.equals(MainInfo.Lang.DE)) && p.c == '\'') { return; } // HACK фикс для английской типографики
     if ((p.hasPrevChar && Util.isLetter(p.prevChar)) && (p.hasNextChar  && Util.isLetter(p.nextChar)) && p.c == '\'') { return; }

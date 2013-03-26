@@ -7,20 +7,29 @@ package ru.artlebedev.typograf.model;
  * Time: 12:29:33
  */
 public class Word {
-  public final StringBuilder value;
+  public final String value;
   public int hyphenCount;
   public boolean hasDigit;
 
   public Word() {
-    value = new StringBuilder();
+    value = "";
   }
 
   public Word(StringBuilder word) {
-    value = word;
+    this(word.toString());
   }
 
-  public Word(String word) {
-    value = new StringBuilder(word);
+  public Word(String val) {
+    value = val;
+    for (int i = 0; i < val.length(); i++) {
+      char c = val.charAt(i);
+      if (c == '-') {
+        hyphenCount += 1;
+      }
+      if (Character.isDigit(c)) {
+        hasDigit = true;
+      }
+    }
   }
 
   @Override
@@ -28,18 +37,12 @@ public class Word {
     if (this == o) { return true; }
     if (!(o instanceof Word)) { return false; }
     Word word = (Word) o;
-    return value.toString().equals(word.value.toString());
+    return value.equals(word.value);
   }
 
   @Override
   public int hashCode() {
     return value.hashCode();
-  }
-
-  public void append(char c) {
-    if (c == '-') { hyphenCount += 1; }
-    if (Character.isDigit(c)) { hasDigit = true; }
-    value.append(c);
   }
 
   public char getLastChar() {
@@ -54,4 +57,8 @@ public class Word {
     return value.charAt(position);
   }
 
+  @Override
+  public String toString() {
+    return value.toString();
+  }
 }

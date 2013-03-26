@@ -196,4 +196,14 @@ public class TypografTest extends AbstractTypografTest {
     }
     // NullPointerException here
   }
+
+  public void testShortOk() {
+    String source = "<div data-data=\"{&quot;obj&quot;:{&quot;key&quot;:&quot;тут куча <b>html-я</b>&quot;}}\">У этого div-а атрибут data-data содержит json.</div>\n";
+    String expected = "<div data-data=\"{&quot;obj&quot;:{&quot;key&quot;:&quot;тут куча <b>html-я</b>&quot;}}\">У этого div-а атрибут data-data содержит json.</div>\n";
+    Typograf p = createProcessor(source);
+    if (p.process()) {
+      String actual = String.valueOf(p.getSource());
+      assertEquals(expected, actual);
+    }
+  }
 }

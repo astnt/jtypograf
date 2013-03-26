@@ -32,6 +32,7 @@ public class Typograf {
   public boolean isInStyle;
   public boolean isInNoTypograf;
   public boolean isInAttribute;
+  public boolean isInAttributeIgnore;
 
   public char prevChar;
   public boolean hasPrevChar;
@@ -71,6 +72,7 @@ public class Typograf {
           && !isInScript
           && !isInStyle
           && !isInNoTypograf
+          && !isInAttributeIgnore
           ) {
         if (currentWord != null && !currentWord.equals(nbsp)) {
           prevWord = currentWord;

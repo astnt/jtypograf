@@ -19,6 +19,7 @@ public class DashRule extends AbstractCharRule implements CharRule {
             || p.isInScript
             || p.isInStyle
             || p.isInNoTypograf
+            || p.isInAttributeIgnore
         ) {
       return;
     }
