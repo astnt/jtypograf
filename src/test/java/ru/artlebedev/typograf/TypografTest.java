@@ -206,4 +206,14 @@ public class TypografTest extends AbstractTypografTest {
       assertEquals(expected, actual);
     }
   }
+
+  public void testDataOk() {
+    String source = "<div data-name=\"Мобилизация судна 'Академик Голицын'\">У этого div-а атрибут data-name.</div>\n";
+    String expected = "<div data-name=\"Мобилизация судна «Академик Голицын»\">У этого div-а атрибут data-name.</div>\n";
+    Typograf p = createProcessor(source);
+    if (p.process()) {
+      String actual = String.valueOf(p.getSource());
+      assertEquals(expected, actual);
+    }
+  }
 }
