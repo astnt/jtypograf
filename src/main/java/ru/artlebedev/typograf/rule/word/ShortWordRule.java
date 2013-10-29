@@ -118,6 +118,20 @@ public class ShortWordRule extends Rule implements WordRule {
     moreThenTwoLetters.add(new Word("над"));
     moreThenTwoLetters.add(new Word("RUB"));
     moreThenTwoLetters.add(new Word("USD"));
+    moreThenTwoLetters.add(new Word("ООО"));
+    moreThenTwoLetters.add(new Word("ОАО"));
+    moreThenTwoLetters.add(new Word("ЗАО"));
+    moreThenTwoLetters.add(new Word("НК"));
+    moreThenTwoLetters.add(new Word("УК"));
+    moreThenTwoLetters.add(new Word("ДОАО"));
+    moreThenTwoLetters.add(new Word("АО"));
+    moreThenTwoLetters.add(new Word("НГК"));
+    moreThenTwoLetters.add(new Word("ГУ"));
+    moreThenTwoLetters.add(new Word("ФГУ"));
+    moreThenTwoLetters.add(new Word("ФГУП"));
+    moreThenTwoLetters.add(new Word("OAO"));
+    moreThenTwoLetters.add(new Word("OOO"));
+    moreThenTwoLetters.add(new Word("ZAO"));
   }
 
   /// <summary>

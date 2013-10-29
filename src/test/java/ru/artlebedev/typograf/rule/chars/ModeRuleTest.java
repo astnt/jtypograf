@@ -42,7 +42,7 @@ public class ModeRuleTest extends AbstractTypografTest {
         "<img alt=\"Делегация 'Газпрома' на ОАО 'ПО 'Севмаш''. Второй справа - Александр Ананенков\" />");
     if (p.process()) {
       logger.info(new String(p.source));
-      assertEquals(new String(p.source), "<img alt=\"Делегация «Газпрома» на ОАО «ПО „Севмаш“». Второй справа — Александр Ананенков\" />");
+      assertEquals(new String(p.source), "<img alt=\"Делегация «Газпрома» на ОАО\u00A0«ПО „Севмаш“». Второй справа — Александр Ананенков\" />");
     }
   }
 

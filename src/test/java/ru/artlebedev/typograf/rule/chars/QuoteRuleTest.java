@@ -1,10 +1,10 @@
 package ru.artlebedev.typograf.rule.chars;
 
-import java.io.IOException;
-
 import ru.artlebedev.typograf.AbstractTypografTest;
 import ru.artlebedev.typograf.Typograf;
 import ru.artlebedev.typograf.info.MainInfo;
+
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,12 +13,37 @@ import ru.artlebedev.typograf.info.MainInfo;
  * Time: 10:07:30
  */
 public class QuoteRuleTest extends AbstractTypografTest {
+  public void test1Href() {
+    final Typograf p = createProcessor("<p>«Всероссийский экологический субботник «Зелёная Россия»</p>" +
+        "<p>Всероссийский экологический субботник «Зелёная Россия»</p>");
+
+    if (p.process()) {
+      final String result = String.valueOf(p.getSource());
+      logger.info(result);
+      assertEquals("<p>«Всероссийский экологический субботник „Зелёная Россия“</p>" +
+          "<p>Всероссийский экологический субботник «Зелёная Россия»</p>" , result);
+    }
+  }
+
+  public void test2Href() {
+    final Typograf p = createProcessor("<p class=\"media_link\">\"<a href=\"/press/chief-journal/2013/18/\">" +
+        "Рад приветствовать Вас со страниц интернет-сайта ООО \"Газпром трансгаз Нижний Новгород\"</a>\"</p>");
+
+    if (p.process()) {
+      final String result = String.valueOf(p.getSource());
+      logger.info(result);
+      assertEquals("<p class=\"media_link\">" +
+          "«<a href=\"/press/chief-journal/2013/18/\">Рад приветствовать " +
+          "Вас со страниц интернет-сайта ООО\u00a0„Газпром трансгаз Нижний Новгород“</a>»</p>" , result);
+    }
+  }
+
   public void test3level() {
     final Typograf p = createProcessor("<p>\"Комплекс стандартов \"Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО \"Газпром\"\"\"</p>");
     if (p.process()) {
       final String result = String.valueOf(p.getSource());
       logger.info(result);
-      assertEquals("<p>«Комплекс стандартов „Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО „Газпром““»</p>" , result);
+      assertEquals("<p>«Комплекс стандартов „Документы нормативные для проектирования, строительства и эксплуатации объектов ОАО\u00A0„Газпром““»</p>" , result);
     }
   }
 
@@ -42,7 +67,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     final Typograf p = createProcessor("Совместно с ОАО \"<a href=\"\">СИБУР Холдинг</a>\" компания");
     if (p.process()) {
       logger.info(String.valueOf(p.getSource()));
-      assertEquals("Совместно с ОАО «<a href=\"\">СИБУР Холдинг</a>» компания", String.valueOf(p.getSource()));
+      assertEquals("Совместно с ОАО\u00A0«<a href=\"\">СИБУР Холдинг</a>» компания", String.valueOf(p.getSource()));
     }
   }
   
@@ -74,7 +99,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     final Typograf p = createProcessor("<p>ООО \"Кубаньгазпром\" активным коллективов \"<a href=\"/path/\">Факел</a>\".</p>");
     if (p.process()) {
       logger.info(String.valueOf(p.getSource()));
-      assertEquals("<p>ООО «Кубаньгазпром» активным коллективов «<a href=\"/path/\">Факел</a>».</p>", String.valueOf(p.getSource()));
+      assertEquals("<p>ООО\u00A0«Кубаньгазпром» активным коллективов «<a href=\"/path/\">Факел</a>».</p>", String.valueOf(p.getSource()));
     }
   }
 
@@ -126,7 +151,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     Typograf p = new Typograf("Протокол заседания Котировочной комиссии ОАО 'Газпром'");
     p.addRules();
     if (p.process()) {
-      assertWith("Протокол заседания Котировочной комиссии ОАО «Газпром»", p.getSource());
+      assertWith("Протокол заседания Котировочной комиссии ОАО\u00A0«Газпром»", p.getSource());
     } else {
       fail();
     }
@@ -172,7 +197,6 @@ public class QuoteRuleTest extends AbstractTypografTest {
     p.addRule(new QuoteRule());
     if (p.process()) {
       String result = new String(p.getSource());
-      logger.info(result);
       assertTrue(result.contains("«НГК „Славнефть“»"));
     } else {
       fail();
@@ -192,7 +216,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     if (p.process()) {
       String result = new String(p.getSource());
       logger.info(result);
-      assertWith("ОАО «Салаватнефтеоргсинтез»&nbsp;— тест «следующей» кавычки",
+      assertWith("ОАО\u00a0«Салаватнефтеоргсинтез»&nbsp;— тест «следующей» кавычки",
           p.getSource());
     } else {
       fail();
@@ -205,7 +229,7 @@ public class QuoteRuleTest extends AbstractTypografTest {
     if (p.process()) {
       String result = new String(p.getSource());
       logger.info(result);
-      assertWith("текст «НГК „Славнефть“» текст",
+      assertWith("текст «НГК\u00a0„Славнефть“» текст",
           p.getSource());
     } else {
       fail();
