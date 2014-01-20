@@ -216,4 +216,12 @@ public class TypografTest extends AbstractTypografTest {
       assertEquals(expected, actual);
     }
   }
+
+  public void testShortWord() {
+    String source = "ЛПУ МГ";
+    Typograf p = createProcessor(source);
+    if (p.process()) {
+      assertTrue(p.source[3] == CharsInfo.noBreakSpace);
+    }
+  }
 }

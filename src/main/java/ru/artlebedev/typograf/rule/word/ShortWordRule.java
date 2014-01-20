@@ -132,6 +132,7 @@ public class ShortWordRule extends Rule implements WordRule {
     moreThenTwoLetters.add(new Word("OAO"));
     moreThenTwoLetters.add(new Word("OOO"));
     moreThenTwoLetters.add(new Word("ZAO"));
+    moreThenTwoLetters.add(new Word("ЛПУ"));
   }
 
   /// <summary>
