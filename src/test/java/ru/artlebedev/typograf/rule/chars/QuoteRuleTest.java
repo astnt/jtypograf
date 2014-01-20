@@ -63,6 +63,14 @@ public class QuoteRuleTest extends AbstractTypografTest {
     }
   }
 
+  public void testQuotesHrefOuterWithNoBreakSpaceReal() { // c2 a0 - NO-BREAK SPACE - after </a>"
+    Typograf p = createProcessor("<p>Проект \"<a href=\"/social/children/\">Газпром - детям</a>\" начался</p>");
+    if (p.process()) {
+      logger.info(String.valueOf(p.getSource()));
+      assertEquals("<p>Проект «<a href=\"/social/children/\">Газпром\u00A0— детям</a>» начался</p>", String.valueOf(p.getSource()));
+    }
+  }
+
   public void testQuotesHrefOuterWithNoBreakSpace() {
     final Typograf p = createProcessor("Совместно с ОАО \"<a href=\"\">СИБУР Холдинг</a>\" компания");
     if (p.process()) {
