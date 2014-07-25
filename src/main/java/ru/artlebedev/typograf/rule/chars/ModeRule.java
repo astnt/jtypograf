@@ -49,7 +49,8 @@ public class ModeRule extends Rule implements CharRule {
       p.updateChar();
     } else if (p.isInTag && p.word != null &&
         (p.word.equals(W_TITLE) || p.word.equals(W_ALT)
-            || (!p.word.value.startsWith("data-data") && p.word.value.startsWith("data-") && p.word.value.endsWith("=")))) {
+            || (p.word.value.startsWith("data-") && !p.word.value.startsWith("data-data")
+            && !p.word.value.startsWith("data-xp") && p.word.value.endsWith("=")))) {
       if (attributeWasEmpty) {
         attributeWasEmpty = false;
         return;
@@ -60,7 +61,8 @@ public class ModeRule extends Rule implements CharRule {
       p.charIndex += 1;
       if (p.source[p.charIndex] == '"') { p.charIndex += 1; }
       p.updateChar();
-    } else if (p.isInTag && p.word != null && p.word.value.startsWith("data-data") && p.word.value.endsWith("=")) {
+    } else if (p.isInTag && p.word != null
+        && (p.word.value.startsWith("data-data") || p.word.value.startsWith("data-xp")) && p.word.value.endsWith("=")) {
       p.isInTag = false;
       p.isInText = true;
       p.isInAttributeIgnore = true;
